@@ -1,0 +1,241 @@
+-- ====================================================
+-- PROCEDIMIENTOS ALMACENADOS
+-- ====================================================
+DELIMITER //
+
+-- 1. Registrar nueva calificación y actualizar promedio
+CREATE PROCEDURE RegisterRatingAndUpdateAverage(
+    IN p_customer_id INT,
+    IN p_product_id INT,
+    IN p_company_id VARCHAR(20),
+    IN p_poll_id INT,
+    IN p_rating INT,
+    IN p_comment TEXT
+)
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+    
+    START TRANSACTION;
+    
+    INSERT INTO rates (customer_id, product_id, company_id, poll_id, rating, comment)
+    VALUES (p_customer_id, p_product_id, p_company_id, p_poll_id, p_rating, p_comment);
+    
+    UPDATE products 
+    SET average_rating = (
+        SELECT AVG(rating) 
+        FROM rates 
+        WHERE product_id = p_product_id
+    )
+    WHERE id = p_product_id;
+    
+    COMMIT;
+END//
+
+-- 2. Insertar empresa y asociar productos por defecto
+CREATE PROCEDURE InsertCompanyWithDefaultProducts(
+    IN p_company_id VARCHAR(20),
+    IN p_type_id INT,
+    IN p_name VARCHAR(80),
+    IN p_category_id INT,
+    IN p_city_id VARCHAR(6),
+    IN p_audience_id INT,
+    IN p_cellphone VARCHAR(15),
+    IN p_email VARCHAR(80)
+)
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+    
+    START TRANSACTION;
+    
+    INSERT INTO companies (id, type_id, name, category_id, city_id, audience_id, cellphone, email)
+    VALUES (p_company_id, p_type_id, p_name, p_category_id, p_city_id, p_audience_id, p_cellphone, p_email);
+    
+    INSERT INTO companyproducts (company_id, product_id, price, unitfmeasure_id)
+    SELECT p_company_id, id, 0.00, unit_id
+    FROM products
+    WHERE category_id = p_category_id
+    AND status = 'ACTIVE'
+    LIMIT 5;
+    
+    COMMIT;
+END//
+
+-- 3. Añadir producto favorito validando duplicados
+CREATE PROCEDURE AddFavoriteProduct(
+    IN p_customer_id INT,
+    IN p_product_id INT,
+    IN p_favorite_name VARCHAR(200),
+    IN p_favorite_description TEXT
+)
+BEGIN
+    DECLARE v_favorite_id INT;
+    DECLARE v_exists INT DEFAULT 0;
+    
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+    
+    START TRANSACTION;
+    
+    SELECT id INTO v_favorite_id 
+    FROM favorites 
+    WHERE customer_id = p_customer_id 
+    AND name = p_favorite_name
+    LIMIT 1;
+    
+    IF v_favorite_id IS NULL THEN
+        INSERT INTO favorites (customer_id, name, description)
+        VALUES (p_customer_id, p_favorite_name, p_favorite_description);
+        SET v_favorite_id = LAST_INSERT_ID();
+    END IF;
+    
+    SELECT COUNT(*) INTO v_exists
+    FROM details_favorites
+    WHERE favorite_id = v_favorite_id AND product_id = p_product_id;
+    
+    IF v_exists = 0 THEN
+        INSERT INTO details_favorites (favorite_id, product_id)
+        VALUES (v_favorite_id, p_product_id);
+    END IF;
+    
+    COMMIT;
+END//
+
+-- 4. Generar resumen mensual de calificaciones por empresa
+CREATE PROCEDURE GenerateMonthlyRatingSummary(
+    IN p_year INT,
+    IN p_month INT
+)
+BEGIN
+    CREATE TEMPORARY TABLE IF NOT EXISTS temp_rating_summary (
+        company_id VARCHAR(20),
+        company_name VARCHAR(80),
+        avg_rating DECIMAL(3,2),
+        total_ratings INT,
+        month_year VARCHAR(7)
+    );
+    
+    INSERT INTO temp_rating_summary
+    SELECT 
+        c.id,
+        c.name,
+        AVG(r.rating),
+        COUNT(r.id),
+        CONCAT(p_year, '-', LPAD(p_month, 2, '0'))
+    FROM companies c
+    JOIN rates r ON c.id = r.company_id
+    WHERE YEAR(r.created_at) = p_year 
+    AND MONTH(r.created_at) = p_month
+    GROUP BY c.id;
+    
+    SELECT * FROM temp_rating_summary;
+    
+    DROP TEMPORARY TABLE temp_rating_summary;
+END//
+
+-- 5. Calcular beneficios activos por membresía
+CREATE PROCEDURE CalculateActiveBenefitsByMembership(
+    IN p_membership_id INT
+)
+BEGIN
+    SELECT 
+        m.name AS membership_name,
+        b.description AS benefit_description,
+        b.detail AS benefit_detail,
+        mp.start_date,
+        mp.end_date
+    FROM memberships m
+    JOIN membershipbenefits mb ON m.id = mb.membership_id
+    JOIN benefits b ON mb.benefit_id = b.id
+    JOIN membershipperiods mp ON m.id = mp.membership_id
+    WHERE m.id = p_membership_id
+    AND mp.status = 'ACTIVE'
+    AND CURDATE() BETWEEN mp.start_date AND mp.end_date;
+END//
+
+-- 6. Eliminar productos huérfanos
+CREATE PROCEDURE DeleteOrphanProducts()
+BEGIN
+    DELETE FROM products 
+    WHERE id NOT IN (
+        SELECT DISTINCT product_id FROM rates
+    )
+    AND id NOT IN (
+        SELECT DISTINCT product_id FROM companyproducts
+    )
+    AND id NOT IN (
+        SELECT DISTINCT product_id FROM details_favorites
+    );
+    
+    SELECT ROW_COUNT() AS deleted_products;
+END//
+
+-- 7. Actualizar precios por categoría
+CREATE PROCEDURE UpdatePricesByCategory(
+    IN p_category_id INT,
+    IN p_factor DECIMAL(5,2)
+)
+BEGIN
+    UPDATE companyproducts cp
+    JOIN products p ON cp.product_id = p.id
+    SET cp.price = cp.price * p_factor
+    WHERE p.category_id = p_category_id;
+    
+    SELECT ROW_COUNT() AS updated_products;
+END//
+
+-- 8. Validar inconsistencias entre rates y quality_products
+CREATE PROCEDURE ValidateRatingConsistency()
+BEGIN
+    CREATE TEMPORARY TABLE IF NOT EXISTS temp_inconsistencies (
+        rate_id INT,
+        product_id INT,
+        customer_id INT,
+        issue_type VARCHAR(50)
+    );
+    
+    INSERT INTO temp_inconsistencies
+    SELECT r.id, r.product_id, r.customer_id, 'Missing quality record'
+    FROM rates r
+    LEFT JOIN quality_products qp ON r.id = qp.rate_id
+    WHERE qp.rate_id IS NULL;
+    
+    SELECT * FROM temp_inconsistencies;
+    
+    DROP TEMPORARY TABLE temp_inconsistencies;
+END//
+
+-- 9. Asignar beneficios a nuevas audiencias
+CREATE PROCEDURE AssignBenefitsToAudience(
+    IN p_audience_id INT,
+    IN p_benefit_id INT
+)
+BEGIN
+    INSERT IGNORE INTO audiencebenefits (audience_id, benefit_id)
+    VALUES (p_audience_id, p_benefit_id);
+    
+    SELECT ROW_COUNT() AS assignments_made;
+END//
+
+-- 10. Activar planes de membresía con pago confirmado
+CREATE PROCEDURE ActivatePaidMemberships()
+BEGIN
+    UPDATE membershipperiods 
+    SET status = 'ACTIVE'
+    WHERE end_date < CURDATE() 
+    AND status = 'INACTIVE';
+    
+    SELECT ROW_COUNT() AS activated_memberships;
+END//
+
+DELIMITER ;

@@ -1,0 +1,211 @@
+-- ====================================================
+-- TRIGGERS
+-- ====================================================
+DELIMITER //
+
+-- 1. Actualizar fecha de modificación de producto
+CREATE TRIGGER update_product_modified_date
+BEFORE UPDATE ON products
+FOR EACH ROW
+BEGIN
+    SET NEW.updated_at = NOW();
+END//
+
+-- 2. Registrar log cuando un cliente califica un producto
+CREATE TRIGGER log_product_rating
+AFTER INSERT ON rates
+FOR EACH ROW
+BEGIN
+    INSERT INTO log_acciones (
+        tabla, accion, customer_id, product_id, 
+        rating, fecha_accion
+    ) VALUES (
+        'rates', 'INSERT', NEW.customer_id, NEW.product_id,
+        NEW.rating, NOW()
+    );
+END//
+
+-- 3. Crear tabla de logs si no existe
+CREATE TABLE IF NOT EXISTS log_acciones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    tabla VARCHAR(50),
+    accion VARCHAR(20),
+    customer_id INT,
+    product_id INT,
+    rating INT,
+    fecha_accion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)//
+
+-- 4. Impedir insertar productos sin unidad de medida
+CREATE TRIGGER validate_product_unit
+BEFORE INSERT ON products
+FOR EACH ROW
+BEGIN
+    IF NEW.unit_id IS NULL THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'Product must have a unit of measure assigned';
+    END IF;
+END//
+
+-- 5. Validar calificaciones no mayores a 5
+CREATE TRIGGER validate_rating_range
+BEFORE INSERT ON rates
+FOR EACH ROW
+BEGIN
+    IF NEW.rating > 5 OR NEW.rating < 1 THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'Rating must be between 1 and 5';
+    END IF;
+END//
+
+-- 6. Actualizar estado de membresía cuando vence
+CREATE TRIGGER update_membership_status
+AFTER UPDATE ON membershipperiods
+FOR EACH ROW
+BEGIN
+    IF NEW.end_date < CURDATE() AND OLD.status = 'ACTIVE' THEN
+        UPDATE membershipperiods 
+        SET status = 'EXPIRED' 
+        WHERE membership_id = NEW.membership_id 
+        AND period_id = NEW.period_id 
+        AND customer_id = NEW.customer_id;
+    END IF;
+END//
+
+-- 7. Evitar duplicados de productos por empresa
+CREATE TRIGGER prevent_duplicate_company_products
+BEFORE INSERT ON companyproducts
+FOR EACH ROW
+BEGIN
+    DECLARE product_exists INT DEFAULT 0;
+    
+    SELECT COUNT(*) INTO product_exists
+    FROM companyproducts
+    WHERE company_id = NEW.company_id 
+    AND product_id = NEW.product_id;
+    
+    IF product_exists > 0 THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'Product already exists for this company';
+    END IF;
+END//
+
+-- 8. Insertar en quality_products tras calificación
+CREATE TRIGGER insert_quality_after_rating
+AFTER INSERT ON rates
+FOR EACH ROW
+BEGIN
+    INSERT INTO quality_products (
+        product_id, customer_id, rate_id, quality_score,
+        quality_level
+    ) VALUES (
+        NEW.product_id, NEW.customer_id, NEW.id, NEW.rating,
+        CASE 
+            WHEN NEW.rating >= 5 THEN 'EXCELLENT'
+            WHEN NEW.rating >= 4 THEN 'GOOD'
+            WHEN NEW.rating >= 3 THEN 'AVERAGE'
+            WHEN NEW.rating >= 2 THEN 'POOR'
+            ELSE 'CRITICAL'
+        END
+    );
+END//
+
+-- 9. Eliminar favoritos si se elimina el producto
+CREATE TRIGGER delete_favorites_on_product_delete
+AFTER DELETE ON products
+FOR EACH ROW
+BEGIN
+    DELETE FROM details_favorites 
+    WHERE product_id = OLD.id;
+END//
+
+-- 10. Impedir doble calificación por cliente
+CREATE TRIGGER prevent_duplicate_rating
+BEFORE INSERT ON rates
+FOR EACH ROW
+BEGIN
+    DECLARE rating_exists INT DEFAULT 0;
+    
+    SELECT COUNT(*) INTO rating_exists
+    FROM rates
+    WHERE customer_id = NEW.customer_id 
+    AND product_id = NEW.product_id
+    AND poll_id = NEW.poll_id;
+    
+    IF rating_exists > 0 THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'Customer has already rated this product in this poll';
+    END IF;
+END//
+
+-- 11. Validar correos duplicados en clientes
+CREATE TRIGGER validate_unique_customer_email
+BEFORE INSERT ON customers
+FOR EACH ROW
+BEGIN
+    DECLARE email_exists INT DEFAULT 0;
+    
+    IF NEW.email IS NOT NULL THEN
+        SELECT COUNT(*) INTO email_exists
+        FROM customers
+        WHERE email = NEW.email;
+        
+        IF email_exists > 0 THEN
+            SIGNAL SQLSTATE '45000' 
+            SET MESSAGE_TEXT = 'Email already exists';
+        END IF;
+    END IF;
+END//
+
+-- 12. Actualizar campo updated_at en companies
+CREATE TRIGGER update_company_modified_date
+BEFORE UPDATE ON companies
+FOR EACH ROW
+BEGIN
+    SET NEW.updated_at = NOW();
+END//
+
+-- 13. Registrar cambios de estado en encuestas
+CREATE TRIGGER log_poll_status_changes
+AFTER UPDATE ON polls
+FOR EACH ROW
+BEGIN
+    IF OLD.isactive != NEW.isactive THEN
+        INSERT INTO log_acciones (
+            tabla, accion, poll_id, old_status, new_status, fecha_accion
+        ) VALUES (
+            'polls', 'STATUS_CHANGE', NEW.id, OLD.isactive, NEW.isactive, NOW()
+        );
+    END IF;
+END//
+
+-- 14. Crear tabla extendida de logs
+CREATE TABLE IF NOT EXISTS log_acciones_extended (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    tabla VARCHAR(50),
+    accion VARCHAR(20),
+    customer_id INT,
+    product_id INT,
+    poll_id INT,
+    rating INT,
+    old_status BOOLEAN,
+    new_status BOOLEAN,
+    fecha_accion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)//
+
+-- 15. Recalcular promedio tras nueva evaluación
+CREATE TRIGGER recalculate_product_average
+AFTER INSERT ON rates
+FOR EACH ROW
+BEGIN
+    UPDATE products 
+    SET average_rating = (
+        SELECT AVG(rating) 
+        FROM rates 
+        WHERE product_id = NEW.product_id
+    )
+    WHERE id = NEW.product_id;
+END//
+
+DELIMITER ;
+

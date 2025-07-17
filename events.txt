@@ -1,0 +1,274 @@
+-- ====================================================
+-- EVENTS
+-- ====================================================
+SET GLOBAL event_scheduler = ON;
+
+DELIMITER //
+
+-- 1. Borrar productos sin actividad cada 6 meses
+CREATE EVENT IF NOT EXISTS delete_inactive_products
+ON SCHEDULE EVERY 6 MONTH
+STARTS CURRENT_TIMESTAMP
+DO
+BEGIN
+    DELETE FROM products 
+    WHERE id NOT IN (
+        SELECT DISTINCT product_id FROM rates
+        WHERE created_at >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
+    )
+    AND id NOT IN (
+        SELECT DISTINCT product_id FROM companyproducts
+        WHERE status = 'ACTIVE'
+    )
+    AND id NOT IN (
+        SELECT DISTINCT product_id FROM details_favorites
+        WHERE created_at >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
+    );
+END//
+
+-- 2. Recalcular promedio de calificaciones semanalmente
+CREATE EVENT IF NOT EXISTS recalculate_ratings_weekly
+ON SCHEDULE EVERY 1 WEEK
+STARTS CURRENT_TIMESTAMP
+DO
+BEGIN
+    UPDATE products p
+    SET average_rating = (
+        SELECT COALESCE(AVG(r.rating), 0)
+        FROM rates r
+        WHERE r.product_id = p.id
+    );
+END//
+
+-- 3. Actualizar precios según inflación mensual
+CREATE EVENT IF NOT EXISTS update_prices_monthly
+ON SCHEDULE EVERY 1 MONTH
+STARTS CURRENT_TIMESTAMP
+DO
+BEGIN
+    UPDATE companyproducts 
+    SET price = price * 1.03
+    WHERE status = 'ACTIVE';
+END//
+
+-- 4. Crear backups lógicos diariamente
+CREATE EVENT IF NOT EXISTS daily_backup
+ON SCHEDULE EVERY 1 DAY
+STARTS CURRENT_TIMESTAMP
+DO
+BEGIN
+    INSERT INTO products_backup 
+    SELECT * FROM products;
+    
+    INSERT INTO rates_backup 
+    SELECT * FROM rates WHERE created_at >= DATE_SUB(NOW(), INTERVAL 1 DAY);
+END//
+
+-- 5. Crear tablas de backup
+CREATE TABLE IF NOT EXISTS products_backup LIKE products//
+CREATE TABLE IF NOT EXISTS rates_backup LIKE rates//
+
+-- 6. Notificar productos favoritos sin calificar
+CREATE EVENT IF NOT EXISTS notify_unrated_favorites
+ON SCHEDULE EVERY 1 WEEK
+STARTS CURRENT_TIMESTAMP
+DO
+BEGIN
+    INSERT INTO user_reminders (customer_id, product_id, reminder_type, created_at)
+    SELECT DISTINCT f.customer_id, df.product_id, 'UNRATED_FAVORITE', NOW()
+    FROM favorites f
+    JOIN details_favorites df ON f.id = df.favorite_id
+    LEFT JOIN rates r ON df.product_id = r.product_id AND f.customer_id = r.customer_id
+    WHERE r.id IS NULL;
+END//
+
+-- 7. Crear tabla de recordatorios
+CREATE TABLE IF NOT EXISTS user_reminders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT,
+    product_id INT,
+    reminder_type VARCHAR(50),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES customers(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
+)//
+
+-- 8. Revisar inconsistencias cada domingo
+CREATE EVENT IF NOT EXISTS check_inconsistencies_weekly
+ON SCHEDULE EVERY 1 WEEK
+STARTS CURRENT_TIMESTAMP
+DO
+BEGIN
+    INSERT INTO errores_log (error_type, description, created_at)
+    SELECT 'PRODUCT_WITHOUT_COMPANY', 
+           CONCAT('Product ID ', p.id, ' has no associated company'),
+           NOW()
+    FROM products p
+    LEFT JOIN companyproducts cp ON p.id = cp.product_id
+    WHERE cp.product_id IS NULL;
+END//
+
+-- 9. Crear tabla de errores
+CREATE TABLE IF NOT EXISTS errores_log (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    error_type VARCHAR(50),
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)//
+
+-- 10. Archivar membresías vencidas diariamente
+CREATE EVENT IF NOT EXISTS archive_expired_memberships
+ON SCHEDULE EVERY 1 DAY
+STARTS '00:00:00'
+DO
+BEGIN
+    UPDATE membershipperiods 
+    SET status = 'EXPIRED' 
+    WHERE end_date < CURDATE() 
+    AND status = 'ACTIVE';
+END//
+
+-- 11. Notificar beneficios nuevos semanalmente
+CREATE EVENT IF NOT EXISTS notify_new_benefits_weekly
+ON SCHEDULE EVERY 1 WEEK
+STARTS CURRENT_TIMESTAMP
+DO
+BEGIN
+    INSERT INTO notificaciones (customer_id, message, created_at)
+    SELECT DISTINCT c.id, 
+           CONCAT('New benefit available: ', b.description),
+           NOW()
+    FROM customers c
+    JOIN audiences a ON c.audience_id = a.id
+    JOIN audiencebenefits ab ON a.id = ab.audience_id
+    JOIN benefits b ON ab.benefit_id = b.id
+    WHERE b.id IN (
+        SELECT id FROM benefits 
+        WHERE created_at >= DATE_SUB(NOW(), INTERVAL 1 WEEK)
+    );
+END//
+
+-- 12. Crear tabla de notificaciones
+CREATE TABLE IF NOT EXISTS notificaciones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT,
+    message TEXT,
+    is_read BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES customers(id)
+)//
+
+-- 13. Calcular favoritos por cliente mensualmente
+CREATE EVENT IF NOT EXISTS calculate_favorites_monthly
+ON SCHEDULE EVERY 1 MONTH
+STARTS CURRENT_TIMESTAMP
+DO
+BEGIN
+    INSERT INTO favoritos_resumen (customer_id, favorite_count, calculation_date)
+    SELECT f.customer_id, COUNT(df.product_id), CURDATE()
+    FROM favorites f
+    JOIN details_favorites df ON f.id = df.favorite_id
+    GROUP BY f.customer_id
+    ON DUPLICATE KEY UPDATE 
+        favorite_count = VALUES(favorite_count),
+        calculation_date = VALUES(calculation_date);
+END//
+
+-- 14. Crear tabla de resumen de favoritos
+CREATE TABLE IF NOT EXISTS favoritos_resumen (
+    customer_id INT PRIMARY KEY,
+    favorite_count INT,
+    calculation_date DATE,
+    FOREIGN KEY (customer_id) REFERENCES customers(id)
+)//
+
+-- 15. Validar claves foráneas semanalmente
+CREATE EVENT IF NOT EXISTS validate_foreign_keys_weekly
+ON SCHEDULE EVERY 1 WEEK
+STARTS CURRENT_TIMESTAMP
+DO
+BEGIN
+    INSERT INTO inconsistencias_fk (table_name, foreign_key, issue, created_at)
+    SELECT 'rates', 'product_id', 'Invalid product reference', NOW()
+    FROM rates r
+    LEFT JOIN products p ON r.product_id = p.id
+    WHERE p.id IS NULL;
+    
+    INSERT INTO inconsistencias_fk (table_name, foreign_key, issue, created_at)
+    SELECT 'rates', 'customer_id', 'Invalid customer reference', NOW()
+    FROM rates r
+    LEFT JOIN customers c ON r.customer_id = c.id
+    WHERE c.id IS NULL;
+END//
+
+-- 16. Crear tabla de inconsistencias
+CREATE TABLE IF NOT EXISTS inconsistencias_fk (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    table_name VARCHAR(50),
+    foreign_key VARCHAR(50),
+    issue VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)//
+
+-- 17. Eliminar calificaciones inválidas antiguas
+CREATE EVENT IF NOT EXISTS clean_invalid_ratings
+ON SCHEDULE EVERY 1 MONTH
+STARTS CURRENT_TIMESTAMP
+DO
+BEGIN
+    DELETE FROM rates 
+    WHERE (rating IS NULL OR rating < 1 OR rating > 5)
+    AND created_at < DATE_SUB(NOW(), INTERVAL 3 MONTH);
+END//
+
+-- 18. Recordar renovación de membresías
+CREATE EVENT IF NOT EXISTS membership_renewal_reminder
+ON SCHEDULE EVERY 1 DAY
+STARTS CURRENT_TIMESTAMP
+DO
+BEGIN
+    INSERT INTO recordatorios (customer_id, message, created_at)
+    SELECT mp.customer_id, 
+           CONCAT('Your membership expires on ', mp.end_date),
+           NOW()
+    FROM membershipperiods mp
+    WHERE mp.end_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)
+    AND mp.status = 'ACTIVE';
+END//
+
+-- 19. Crear tabla de recordatorios
+CREATE TABLE IF NOT EXISTS recordatorios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT,
+    message TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES customers(id)
+)//
+
+-- 20. Actualizar estadísticas generales semanalmente
+CREATE EVENT IF NOT EXISTS update_general_stats_weekly
+ON SCHEDULE EVERY 1 WEEK
+STARTS CURRENT_TIMESTAMP
+DO
+BEGIN
+    INSERT INTO estadisticas (metric_name, metric_value, calculation_date)
+    VALUES 
+        ('total_products', (SELECT COUNT(*) FROM products WHERE status = 'ACTIVE'), CURDATE()),
+        ('total_customers', (SELECT COUNT(*) FROM customers WHERE status = 'ACTIVE'), CURDATE()),
+        ('total_companies', (SELECT COUNT(*) FROM companies WHERE status = 'ACTIVE'), CURDATE()),
+        ('avg_rating', (SELECT AVG(rating) FROM rates), CURDATE())
+    ON DUPLICATE KEY UPDATE 
+        metric_value = VALUES(metric_value),
+        calculation_date = VALUES(calculation_date);
+END//
+
+-- 21. Crear tabla de estadísticas
+CREATE TABLE IF NOT EXISTS estadisticas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    metric_name VARCHAR(50) UNIQUE,
+    metric_value DECIMAL(10,2),
+    calculation_date DATE
+)//
+
+DELIMITER ;
+

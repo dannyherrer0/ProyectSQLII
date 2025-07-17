@@ -1,0 +1,183 @@
+==================================================
+-- FUNCIONES AGREGADAS
+-- ====================================================
+-- 1. Promedio de calificación por producto
+SELECT p.name AS product_name,
+       AVG(r.rating) AS average_rating,
+       COUNT(r.id) AS total_ratings
+FROM products p
+JOIN rates r ON p.id = r.product_id
+GROUP BY p.id
+ORDER BY average_rating DESC;
+
+-- 2. Contar productos calificados por cliente
+SELECT c.name AS customer_name,
+       COUNT(r.id) AS products_rated
+FROM customers c
+JOIN rates r ON c.id = r.customer_id
+GROUP BY c.id
+ORDER BY products_rated DESC;
+
+-- 3. Total de beneficios asignados por audiencia
+SELECT a.description AS audience,
+       COUNT(ab.benefit_id) AS total_benefits
+FROM audiences a
+JOIN audiencebenefits ab ON a.id = ab.audience_id
+GROUP BY a.id
+ORDER BY total_benefits DESC;
+
+-- 4. Media de productos por empresa
+SELECT AVG(product_count) AS average_products_per_company
+FROM (
+    SELECT COUNT(cp.product_id) AS product_count
+    FROM companyproducts cp
+    GROUP BY cp.company_id
+) AS company_products;
+
+-- 5. Total de empresas por ciudad
+SELECT cm.name AS city_name,
+       COUNT(c.id) AS total_companies
+FROM citiesormunicipalities cm
+JOIN companies c ON cm.code = c.city_id
+GROUP BY cm.code
+ORDER BY total_companies DESC;
+
+-- 6. Promedio de precios por unidad de medida
+SELECT uf.description AS unit_measure,
+       AVG(cp.price) AS average_price,
+       COUNT(cp.product_id) AS product_count
+FROM unitfmeasure uf
+JOIN companyproducts cp ON uf.id = cp.unitfmeasure_id
+GROUP BY uf.id
+ORDER BY average_price DESC;
+
+-- 7. Número de clientes por ciudad
+SELECT cm.name AS city_name,
+       COUNT(c.id) AS customer_count
+FROM citiesormunicipalities cm
+JOIN customers c ON cm.code = c.city_id
+GROUP BY cm.code
+ORDER BY customer_count DESC;
+
+-- 8. Planes de membresía por periodo
+SELECT p.name AS period_name,
+       COUNT(mp.membership_id) AS membership_count
+FROM periods p
+JOIN membershipperiods mp ON p.id = mp.period_id
+GROUP BY p.id
+ORDER BY membership_count DESC;
+
+-- 9. Promedio de calificaciones de productos favoritos por cliente
+SELECT c.name AS customer_name,
+       AVG(r.rating) AS avg_rating_favorites
+FROM customers c
+JOIN favorites f ON c.id = f.customer_id
+JOIN details_favorites df ON f.id = df.favorite_id
+JOIN rates r ON df.product_id = r.product_id AND c.id = r.customer_id
+GROUP BY c.id
+ORDER BY avg_rating_favorites DESC;
+
+-- 10. Fecha más reciente de calificación por producto
+SELECT p.name AS product_name,
+       MAX(r.created_at) AS last_rating_date
+FROM products p
+JOIN rates r ON p.id = r.product_id
+GROUP BY p.id
+ORDER BY last_rating_date DESC;
+
+-- 11. Desviación estándar de precios por categoría
+SELECT cat.description AS category,
+       AVG(cp.price) AS avg_price,
+       STDDEV(cp.price) AS price_std_dev
+FROM categories cat
+JOIN products p ON cat.id = p.category_id
+JOIN companyproducts cp ON p.id = cp.product_id
+GROUP BY cat.id
+ORDER BY price_std_dev DESC;
+
+-- 12. Veces que un producto fue marcado como favorito
+SELECT p.name AS product_name,
+       COUNT(df.id) AS favorite_count
+FROM products p
+JOIN details_favorites df ON p.id = df.product_id
+GROUP BY p.id
+ORDER BY favorite_count DESC;
+
+-- 13. Porcentaje de productos evaluados
+SELECT 
+    COUNT(DISTINCT r.product_id) AS evaluated_products,
+    COUNT(DISTINCT p.id) AS total_products,
+    ROUND((COUNT(DISTINCT r.product_id) / COUNT(DISTINCT p.id)) * 100, 2) AS evaluation_percentage
+FROM products p
+LEFT JOIN rates r ON p.id = r.product_id;
+
+-- 14. Promedio de rating por encuesta
+SELECT po.name AS poll_name,
+       AVG(r.rating) AS average_rating,
+       COUNT(r.id) AS total_responses
+FROM polls po
+JOIN rates r ON po.id = r.poll_id
+GROUP BY po.id
+ORDER BY average_rating DESC;
+
+-- 15. Promedio y total de beneficios por plan
+SELECT m.name AS membership_name,
+       COUNT(mb.benefit_id) AS total_benefits,
+       AVG(benefit_count) AS avg_benefits_per_period
+FROM memberships m
+JOIN membershipbenefits mb ON m.id = mb.membership_id
+JOIN (
+    SELECT membership_id, period_id, COUNT(benefit_id) AS benefit_count
+    FROM membershipbenefits
+    GROUP BY membership_id, period_id
+) AS period_benefits ON m.id = period_benefits.membership_id
+GROUP BY m.id
+ORDER BY total_benefits DESC;
+
+-- 16. Media y varianza de precios por empresa
+SELECT c.name AS company_name,
+       AVG(cp.price) AS avg_price,
+       VARIANCE(cp.price) AS price_variance
+FROM companies c
+JOIN companyproducts cp ON c.id = cp.company_id
+GROUP BY c.id
+ORDER BY avg_price DESC;
+
+-- 17. Total de productos disponibles en la ciudad del cliente
+SELECT c.name AS customer_name,
+       cm.name AS city_name,
+       COUNT(DISTINCT p.id) AS available_products
+FROM customers c
+JOIN citiesormunicipalities cm ON c.city_id = cm.code
+JOIN companies co ON cm.code = co.city_id
+JOIN companyproducts cp ON co.id = cp.company_id
+JOIN products p ON cp.product_id = p.id
+WHERE cp.status = 'ACTIVE'
+GROUP BY c.id
+ORDER BY available_products DESC;
+
+-- 18. Productos únicos por tipo de empresa
+SELECT ti.description AS identification_type,
+       COUNT(DISTINCT p.id) AS unique_products
+FROM typesidentifications ti
+JOIN companies c ON ti.id = c.type_id
+JOIN companyproducts cp ON c.id = cp.company_id
+JOIN products p ON cp.product_id = p.id
+GROUP BY ti.id
+ORDER BY unique_products DESC;
+
+-- 19. Total de clientes sin correo electrónico
+SELECT COUNT(*) AS customers_without_email
+FROM customers
+WHERE email IS NULL;
+
+-- 20. Empresa con más productos calificados
+SELECT c.name AS company_name,
+       COUNT(DISTINCT r.product_id) AS rated_products
+FROM companies c
+JOIN companyproducts cp ON c.id = cp.company_id
+JOIN rates r ON cp.product_id = r.product_id
+GROUP BY c.id
+ORDER BY rated_products DESC
+LIMIT 1;
+

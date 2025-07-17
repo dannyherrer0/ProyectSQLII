@@ -1,0 +1,236 @@
+-- ====================================================
+-- JOINS
+-- ====================================================
+-- 1. Ver productos con la empresa que los vende
+SELECT p.name AS product_name,
+       c.name AS company_name,
+       cp.price,
+       uf.description AS unit_measure
+FROM products p
+INNER JOIN companyproducts cp ON p.id = cp.product_id
+INNER JOIN companies c ON cp.company_id = c.id
+INNER JOIN unitfmeasure uf ON cp.unitfmeasure_id = uf.id
+ORDER BY p.name;
+
+-- 2. Mostrar productos favoritos con empresa y categoría
+SELECT p.name AS product_name,
+       c.name AS company_name,
+       cat.description AS category,
+       cust.name AS customer_name
+FROM products p
+JOIN details_favorites df ON p.id = df.product_id
+JOIN favorites f ON df.favorite_id = f.id
+JOIN customers cust ON f.customer_id = cust.id
+JOIN companyproducts cp ON p.id = cp.product_id
+JOIN companies c ON cp.company_id = c.id
+JOIN categories cat ON p.category_id = cat.id
+ORDER BY cust.name, p.name;
+
+-- 3. Ver empresas aunque no tengan productos
+SELECT c.name AS company_name,
+       c.email AS company_email,
+       p.name AS product_name,
+       cp.price
+FROM companies c
+LEFT JOIN companyproducts cp ON c.id = cp.company_id
+LEFT JOIN products p ON cp.product_id = p.id
+ORDER BY c.name;
+
+-- 4. Ver productos que fueron calificados (o no)
+SELECT p.name AS product_name,
+       r.rating,
+       r.comment,
+       cust.name AS customer_name
+FROM products p
+RIGHT JOIN rates r ON p.id = r.product_id
+RIGHT JOIN customers cust ON r.customer_id = cust.id
+ORDER BY p.name, r.created_at DESC;
+
+-- 5. Ver productos con promedio de calificación y empresa
+SELECT p.name AS product_name,
+       c.name AS company_name,
+       AVG(r.rating) AS avg_rating,
+       COUNT(r.id) AS rating_count
+FROM products p
+JOIN companyproducts cp ON p.id = cp.product_id
+JOIN companies c ON cp.company_id = c.id
+JOIN rates r ON p.id = r.product_id
+GROUP BY p.id, c.id
+ORDER BY avg_rating DESC;
+
+-- 6. Ver clientes y sus calificaciones (si las tienen)
+SELECT c.name AS customer_name,
+       c.email AS customer_email,
+       r.rating,
+       p.name AS product_name,
+       r.created_at AS rating_date
+FROM customers c
+LEFT JOIN rates r ON c.id = r.customer_id
+LEFT JOIN products p ON r.product_id = p.id
+ORDER BY c.name, r.created_at DESC;
+
+-- 7. Ver favoritos con la última calificación del cliente
+SELECT c.name AS customer_name,
+       p.name AS product_name,
+       r.rating AS latest_rating,
+       r.created_at AS rating_date
+FROM customers c
+JOIN favorites f ON c.id = f.customer_id
+JOIN details_favorites df ON f.id = df.favorite_id
+JOIN products p ON df.product_id = p.id
+LEFT JOIN rates r ON p.id = r.product_id AND c.id = r.customer_id
+WHERE r.id = (
+    SELECT MAX(r2.id) 
+    FROM rates r2 
+    WHERE r2.product_id = p.id AND r2.customer_id = c.id
+)
+ORDER BY c.name, r.created_at DESC;
+
+-- 8. Ver beneficios incluidos en cada plan de membresía
+SELECT m.name AS membership_name,
+       b.description AS benefit_description,
+       b.detail AS benefit_detail,
+       p.name AS period_name
+FROM memberships m
+JOIN membershipbenefits mb ON m.id = mb.membership_id
+JOIN benefits b ON mb.benefit_id = b.id
+JOIN periods p ON mb.period_id = p.id
+ORDER BY m.name, b.description;
+
+-- 9. Ver clientes con membresía activa y sus beneficios
+SELECT c.name AS customer_name,
+       m.name AS membership_name,
+       b.description AS benefit_description,
+       mp.start_date,
+       mp.end_date
+FROM customers c
+JOIN membershipperiods mp ON c.id = mp.customer_id
+JOIN memberships m ON mp.membership_id = m.id
+JOIN membershipbenefits mb ON m.id = mb.membership_id AND mp.period_id = mb.period_id
+JOIN benefits b ON mb.benefit_id = b.id
+WHERE mp.status = 'ACTIVE'
+AND CURDATE() BETWEEN mp.start_date AND mp.end_date
+ORDER BY c.name, m.name;
+
+-- 10. Ver ciudades con cantidad de empresas
+SELECT cm.name AS city_name,
+       sr.name AS state_name,
+       COUNT(c.id) AS company_count
+FROM citiesormunicipalities cm
+JOIN staterregions sr ON cm.statereg_id = sr.code
+LEFT JOIN companies c ON cm.code = c.city_id
+GROUP BY cm.code
+ORDER BY company_count DESC;
+
+-- 11. Ver encuestas con calificaciones
+SELECT po.name AS poll_name,
+       po.description AS poll_description,
+       r.rating,
+       p.name AS product_name,
+       c.name AS customer_name
+FROM polls po
+JOIN rates r ON po.id = r.poll_id
+JOIN products p ON r.product_id = p.id
+JOIN customers c ON r.customer_id = c.id
+ORDER BY po.name, r.created_at DESC;
+
+-- 12. Ver productos evaluados con datos del cliente
+SELECT p.name AS product_name,
+       c.name AS customer_name,
+       r.rating,
+       r.comment,
+       r.created_at AS evaluation_date
+FROM products p
+JOIN rates r ON p.id = r.product_id
+JOIN customers c ON r.customer_id = c.id
+ORDER BY r.created_at DESC;
+
+-- 13. Ver productos con audiencia de la empresa
+SELECT p.name AS product_name,
+       c.name AS company_name,
+       a.description AS target_audience
+FROM products p
+JOIN companyproducts cp ON p.id = cp.product_id
+JOIN companies c ON cp.company_id = c.id
+JOIN audiences a ON c.audience_id = a.id
+ORDER BY a.description, p.name;
+
+-- 14. Ver clientes con sus productos favoritos
+SELECT c.name AS customer_name,
+       p.name AS product_name,
+       f.name AS favorite_list_name,
+       df.created_at AS added_to_favorites
+FROM customers c
+JOIN favorites f ON c.id = f.customer_id
+JOIN details_favorites df ON f.id = df.favorite_id
+JOIN products p ON df.product_id = p.id
+ORDER BY c.name, df.created_at DESC;
+
+-- 15. Ver planes, periodos, precios y beneficios
+SELECT m.name AS membership_name,
+       p.name AS period_name,
+       mp.price,
+       b.description AS benefit_description
+FROM memberships m
+JOIN membershipperiods mp ON m.id = mp.membership_id
+JOIN periods p ON mp.period_id = p.id
+JOIN membershipbenefits mb ON m.id = mb.membership_id AND p.id = mb.period_id
+JOIN benefits b ON mb.benefit_id = b.id
+ORDER BY m.name, p.name;
+
+-- 16. Ver combinaciones empresa-producto-cliente calificados
+SELECT c.name AS company_name,
+       p.name AS product_name,
+       cust.name AS customer_name,
+       r.rating,
+       r.created_at
+FROM rates r
+JOIN products p ON r.product_id = p.id
+JOIN companies c ON r.company_id = c.id
+JOIN customers cust ON r.customer_id = cust.id
+ORDER BY r.created_at DESC;
+
+-- 17. Comparar favoritos con productos calificados
+SELECT p.name AS product_name,
+       c.name AS customer_name,
+       r.rating AS my_rating,
+       df.created_at AS added_to_favorites
+FROM products p
+JOIN details_favorites df ON p.id = df.product_id
+JOIN favorites f ON df.favorite_id = f.id
+JOIN customers c ON f.customer_id = c.id
+JOIN rates r ON p.id = r.product_id AND c.id = r.customer_id
+ORDER BY c.name, p.name;
+
+-- 18. Ver productos ordenados por categoría
+SELECT cat.description AS category,
+       p.name AS product_name,
+       p.description AS product_description,
+       uf.description AS unit_measure
+FROM categories cat
+JOIN products p ON cat.id = p.category_id
+LEFT JOIN unitfmeasure uf ON p.unit_id = uf.id
+ORDER BY cat.description, p.name;
+
+-- 19. Ver beneficios por audiencia, incluso vacíos
+SELECT a.description AS audience,
+       b.description AS benefit_description,
+       b.detail AS benefit_detail
+FROM audiences a
+LEFT JOIN audiencebenefits ab ON a.id = ab.audience_id
+LEFT JOIN benefits b ON ab.benefit_id = b.id
+ORDER BY a.description, b.description;
+
+-- 20. Ver datos cruzados entre calificaciones, encuestas, productos y clientes
+SELECT r.rating,
+       po.name AS poll_name,
+       p.name AS product_name,
+       c.name AS customer_name,
+       comp.name AS company_name,
+       r.created_at AS rating_date
+FROM rates r
+JOIN polls po ON r.poll_id = po.id
+JOIN products p ON r.product_id = p.id
+JOIN customers c ON r.customer_id = c.id
+JOIN companies comp ON r.company_id = comp.id
+ORDER BY r.created_at DESC;
