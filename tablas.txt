@@ -1,0 +1,237 @@
+-- ====================================================
+-- ESTRUCTURA DE LA BASE DE DATOS (DDL) TABLAS
+-- ====================================================
+
+CREATE TABLE countries (
+    isocode VARCHAR(6) PRIMARY KEY NOT NULL,
+    name VARCHAR(50) UNIQUE,
+    alfaistwo VARCHAR(2) UNIQUE,
+    alfaisthree VARCHAR(4) UNIQUE
+) ENGINE=INNODB;
+
+CREATE TABLE subdivisioncategories (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    description VARCHAR(40) UNIQUE
+) ENGINE=INNODB;
+
+CREATE TABLE staterregions (
+    code VARCHAR(6) PRIMARY KEY NOT NULL,
+    name VARCHAR(60) UNIQUE,
+    country_id VARCHAR(6),
+    FOREIGN KEY (country_id) REFERENCES countries(isocode),
+    code3166 VARCHAR(10) UNIQUE,
+    subdivision_id INT(11),
+    FOREIGN KEY (subdivision_id) REFERENCES subdivisioncategories(id)
+) ENGINE=INNODB;
+
+CREATE TABLE citiesormunicipalities (
+    code VARCHAR(6) PRIMARY KEY NOT NULL,
+    name VARCHAR(60) UNIQUE,
+    statereg_id VARCHAR(6),
+    FOREIGN KEY (statereg_id) REFERENCES staterregions(code)
+) ENGINE=INNODB;
+
+CREATE TABLE typesidentifications (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    description VARCHAR(60) UNIQUE,
+    sufix VARCHAR(5) UNIQUE
+) ENGINE=INNODB;
+
+CREATE TABLE audiences (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    description VARCHAR(60)
+) ENGINE=INNODB;
+
+CREATE TABLE categories (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    description VARCHAR(60) UNIQUE
+) ENGINE=INNODB;
+
+CREATE TABLE unitfmeasure (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    description VARCHAR(60) UNIQUE
+) ENGINE=INNODB;
+
+CREATE TABLE categories_polls (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name VARCHAR(80) UNIQUE
+) ENGINE=INNODB;
+
+CREATE TABLE companies (
+    id VARCHAR(20) PRIMARY KEY NOT NULL,
+    type_id INT,
+    FOREIGN KEY (type_id) REFERENCES typesidentifications(id),
+    name VARCHAR(80) NOT NULL,
+    category_id INT(11),
+    FOREIGN KEY (category_id) REFERENCES categories(id),
+    city_id VARCHAR(6),
+    FOREIGN KEY (city_id) REFERENCES citiesormunicipalities(code),
+    audience_id INT,
+    FOREIGN KEY (audience_id) REFERENCES audiences(id),
+    cellphone VARCHAR(15) UNIQUE,
+    email VARCHAR(80) UNIQUE,
+    status ENUM('ACTIVE', 'INACTIVE') DEFAULT 'ACTIVE',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=INNODB;
+
+CREATE TABLE products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    description TEXT,
+    image VARCHAR(255),
+    category_id INT NOT NULL,
+    unit_id INT,
+    average_rating DECIMAL(3,2) DEFAULT 0,
+    status ENUM('ACTIVE', 'INACTIVE') DEFAULT 'ACTIVE',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (category_id) REFERENCES categories(id),
+    FOREIGN KEY (unit_id) REFERENCES unitfmeasure(id)
+) ENGINE=INNODB;
+
+CREATE TABLE companyproducts (
+    company_id VARCHAR(20),
+    product_id INT,
+    price DECIMAL(10,2),
+    unitfmeasure_id INT,
+    status ENUM('ACTIVE', 'INACTIVE') DEFAULT 'ACTIVE',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (company_id, product_id),
+    FOREIGN KEY (company_id) REFERENCES companies(id),
+    FOREIGN KEY (product_id) REFERENCES products(id),
+    FOREIGN KEY (unitfmeasure_id) REFERENCES unitfmeasure(id)
+) ENGINE=INNODB;
+
+CREATE TABLE customers (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name VARCHAR(80),
+    city_id VARCHAR(6),
+    FOREIGN KEY (city_id) REFERENCES citiesormunicipalities(code),
+    audience_id INT,
+    FOREIGN KEY (audience_id) REFERENCES audiences(id),
+    cellphone VARCHAR(15) UNIQUE,
+    email VARCHAR(80) UNIQUE,
+    address VARCHAR(120),
+    status ENUM('ACTIVE', 'INACTIVE') DEFAULT 'ACTIVE',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=INNODB;
+
+CREATE TABLE polls (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name VARCHAR(80) UNIQUE,
+    description TEXT NOT NULL,
+    isactive BOOLEAN NOT NULL DEFAULT TRUE,
+    categorypoll_id INT,
+    FOREIGN KEY (categorypoll_id) REFERENCES categories_polls(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=INNODB;
+
+CREATE TABLE rates (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT NOT NULL,
+    product_id INT NOT NULL,
+    company_id VARCHAR(20) NOT NULL,
+    poll_id INT,
+    rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    comment TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES customers(id),
+    FOREIGN KEY (product_id) REFERENCES products(id),
+    FOREIGN KEY (company_id) REFERENCES companies(id),
+    FOREIGN KEY (poll_id) REFERENCES polls(id)
+) ENGINE=INNODB;
+
+CREATE TABLE quality_products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT NOT NULL,
+    customer_id INT NOT NULL,
+    rate_id INT NOT NULL,
+    quality_score DECIMAL(3,2) NOT NULL,
+    quality_level ENUM('EXCELLENT', 'GOOD', 'AVERAGE', 'POOR', 'CRITICAL') DEFAULT 'AVERAGE',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES products(id),
+    FOREIGN KEY (customer_id) REFERENCES customers(id),
+    FOREIGN KEY (rate_id) REFERENCES rates(id)
+) ENGINE=INNODB;
+
+CREATE TABLE favorites (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT NOT NULL,
+    name VARCHAR(200) NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES customers(id)
+) ENGINE=INNODB;
+
+CREATE TABLE details_favorites (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    favorite_id INT NOT NULL,
+    product_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (favorite_id) REFERENCES favorites(id),
+    FOREIGN KEY (product_id) REFERENCES products(id),
+    UNIQUE KEY unique_favorite_product (favorite_id, product_id)
+) ENGINE=INNODB;
+
+CREATE TABLE memberships (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    features JSON,
+    status ENUM('ACTIVE', 'INACTIVE') DEFAULT 'ACTIVE',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=INNODB;
+
+CREATE TABLE periods (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) UNIQUE
+) ENGINE=INNODB;
+
+CREATE TABLE membershipperiods (
+    membership_id INT,
+    period_id INT,
+    customer_id INT,
+    price DECIMAL(10,2),
+    start_date DATE,
+    end_date DATE,
+    status ENUM('ACTIVE', 'INACTIVE', 'EXPIRED') DEFAULT 'ACTIVE',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (membership_id, period_id, customer_id),
+    FOREIGN KEY (membership_id) REFERENCES memberships(id),
+    FOREIGN KEY (period_id) REFERENCES periods(id),
+    FOREIGN KEY (customer_id) REFERENCES customers(id)
+) ENGINE=INNODB;
+
+CREATE TABLE benefits (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    description VARCHAR(80),
+    detail TEXT
+) ENGINE=INNODB;
+
+CREATE TABLE membershipbenefits (
+    membership_id INT,
+    period_id INT,
+    benefit_id INT,
+    PRIMARY KEY (membership_id, period_id, benefit_id),
+    FOREIGN KEY (membership_id) REFERENCES memberships(id),
+    FOREIGN KEY (period_id) REFERENCES periods(id),
+    FOREIGN KEY (benefit_id) REFERENCES benefits(id)
+) ENGINE=INNODB;
+
+CREATE TABLE audiencebenefits (
+    audience_id INT,
+    benefit_id INT,
+    PRIMARY KEY (audience_id, benefit_id),
+    FOREIGN KEY (audience_id) REFERENCES audiences(id),
+    FOREIGN KEY (benefit_id) REFERENCES benefits(id)
+) ENGINE=INNODB;
+
