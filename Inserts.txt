@@ -1,0 +1,1053 @@
+-- ====================================================
+-- INSERCIÓN DE DATOS (INSERT)
+-- ====================================================
+
+-- Insertar países con códigos ISO reales
+
+INSERT INTO countries (isocode, name, alfaistwo, alfaisthree) VALUES
+('AF', 'Afganistán', 'AF', 'AFG'),
+('AL', 'Albania', 'AL', 'ALB'),
+('DE', 'Alemania', 'DE', 'DEU'),
+('AD', 'Andorra', 'AD', 'AND'),
+('AO', 'Angola', 'AO', 'AGO'),
+('AI', 'Anguilla', 'AI', 'AIA'),
+('AQ', 'Antártida', 'AQ', 'ATA'),
+('AG', 'Antigua y Barbuda', 'AG', 'ATG'),
+('SA', 'Arabia Saudí', 'SA', 'SAU'),
+('DZ', 'Argelia', 'DZ', 'DZA'),
+('AR', 'Argentina', 'AR', 'ARG'),
+('AM', 'Armenia', 'AM', 'ARM'),
+('AW', 'Aruba', 'AW', 'ABW'),
+('AU', 'Australia', 'AU', 'AUS'),
+('AT', 'Austria', 'AT', 'AUT'),
+('AZ', 'Azerbaiyán', 'AZ', 'AZE'),
+('BS', 'Bahamas', 'BS', 'BHS'),
+('BD', 'Bangladés', 'BD', 'BGD'),
+('BB', 'Barbados', 'BB', 'BRB'),
+('BH', 'Baréin', 'BH', 'BHR'),
+('BE', 'Belgica', 'BE', 'BEL'),
+('BZ', 'Belice', 'BZ', 'BLZ'),
+('BJ', 'Benin', 'BJ', 'BEN'),
+('BM', 'Bermudas', 'BM', 'BMU'),
+('BY', 'Bielorrusia', 'BY', 'BLR'),
+('MM', 'Birmania', 'MM', 'MMR'),
+('BO', 'Bolivia', 'BO', 'BOL'),
+('BA', 'Bosnia y Herzegovina', 'BA', 'BIH'),
+('BW', 'Botswana', 'BW', 'BWA'),
+('BR', 'Brasil', 'BR', 'BRA'),
+('BN', 'Brunéi', 'BN', 'BRN'),
+('BG', 'Bulgaria', 'BG', 'BGR'),
+('BF', 'Burkina Faso', 'BF', 'BFA'),
+('BI', 'Burundi', 'BI', 'BDI'),
+('BT', 'Bután', 'BT', 'BTN'),
+('CV', 'Cabo Verde', 'CV', 'CPV'),
+('KH', 'Camboya', 'KH', 'KHM'),
+('CM', 'Camerún', 'CM', 'CMR'),
+('CA', 'Canadá', 'CA', 'CAN'),
+('BQ', 'Caribe Neerlandés', 'BQ', 'BES'),
+('QA', 'Catar', 'QA', 'QAT'),
+('TD', 'Chad', 'TD', 'TCD'),
+('CL', 'Chile', 'CL', 'CHL'),
+('CN', 'China', 'CN', 'CHN'),
+('CY', 'Chipre', 'CY', 'CYP'),
+('CO', 'Colombia', 'CO', 'COL'),
+('KM', 'Comoras', 'KM', 'COM'),
+('KP', 'Corea del Norte', 'KP', 'PRK'),
+('KR', 'Corea del Sur', 'KR', 'KOR'),
+('CI', 'Costa de Marfil', 'CI', 'CIV'),
+('CR', 'Costa Rica', 'CR', 'CRI'),
+('HR', 'Croacia', 'HR', 'HRV'),
+('CU', 'Cuba', 'CU', 'CUB'),
+('CW', 'Curazao', 'CW', 'CUW'),
+('DK', 'Dinamarca', 'DK', 'DNK'),
+('DM', 'Dominica', 'DM', 'DMA'),
+('EC', 'Ecuador', 'EC', 'ECU'),
+('EG', 'Egipto', 'EG', 'EGY'),
+('SV', 'El Salvador', 'SV', 'SLV'),
+('AE', 'Emiratos árabes Unidos', 'AE', 'ARE'),
+('ER', 'Eritrea', 'ER', 'ERI'),
+('SK', 'Eslovaquia', 'SK', 'SVK'),
+('SI', 'Eslovenia', 'SI', 'SVN'),
+('ES', 'España', 'ES', 'ESP'),
+('FM', 'Estados Federados de Micronesia', 'FM', 'FSM'),
+('US', 'Estados Unidos', 'US', 'USA'),
+('EE', 'Estonia', 'EE', 'EST'),
+('ET', 'Etiopía', 'ET', 'ETH'),
+('PH', 'Filipinas', 'PH', 'PHL'),
+('FI', 'Finlandia', 'FI', 'FIN'),
+('FJ', 'Fiyi', 'FJ', 'FJI'),
+('FR', 'Francia', 'FR', 'FRA'),
+('GA', 'Gabón', 'GA', 'GAB'),
+('GM', 'Gambia', 'GM', 'GMB'),
+('GE', 'Georgia', 'GE', 'GEO'),
+('GH', 'Ghana', 'GH', 'GHA'),
+('GI', 'Gibraltar', 'GI', 'GIB'),
+('GD', 'Granada', 'GD', 'GRD'),
+('GR', 'Grecia', 'GR', 'GRC'),
+('GL', 'Groenlandia', 'GL', 'GRL'),
+('GP', 'Guadalupe', 'GP', 'GLP'),
+('GU', 'Guam', 'GU', 'GUM'),
+('GT', 'Guatemala', 'GT', 'GTM'),
+('GF', 'Guayana Francesa', 'GF', 'GUF'),
+('GG', 'Guernsey', 'GG', 'GGY'),
+('GN', 'Guinea', 'GN', 'GIN'),
+('GQ', 'Guinea Ecuatorial', 'GQ', 'GNQ'),
+('GW', 'Guinea-Bissau', 'GW', 'GNB'),
+('GY', 'Guyana', 'GY', 'GUY'),
+('HT', 'Haití', 'HT', 'HTI'),
+('HN', 'Honduras', 'HN', 'HND'),
+('HK', 'Hong Kong', 'HK', 'HKG'),
+('HU', 'Hungría', 'HU', 'HUN'),
+('IS', 'Islandia', 'IS', 'ISL'),
+('IN', 'India', 'IN', 'IND'),
+('ID', 'Indonesia', 'ID', 'IDN'),
+('IQ', 'Irak', 'IQ', 'IRQ'),
+('IR', 'Iran', 'IR', 'IRN'),
+('IM', 'Isla de Man', 'IM', 'IMN'),
+('CX', 'Isla de Navidad', 'CX', 'CXR'),
+('NF', 'Isla Norfolk', 'NF', 'NFK'),
+('IE', 'Irlanda', 'IE', 'IRL'),
+('KY', 'Islas Caimán', 'KY', 'CYM'),
+('CC', 'Islas Cocos', 'CC', 'CCK'),
+('CK', 'Islas Cook', 'CK', 'COK'),
+('FO', 'Islas Feroe', 'FO', 'FRO'),
+('GS', 'Islas Georgias y Sandwich del Sur', 'GS', 'SGS'),
+('FK', 'Islas Malvinas', 'FK', 'FLK'),
+('MP', 'Islas Marianas del Norte', 'MP', 'MNP'),
+('MH', 'Islas Marshall', 'MH', 'MHL'),
+('PN', 'Islas Pitcairn', 'PN', 'PCN'),
+('SB', 'Islas Salomón', 'SB', 'SLB'),
+('TC', 'Islas Turcas y Caicos', 'TC', 'TCA'),
+('VG', 'Islas Vírgenes Británicas', 'VG', 'VGB'),
+('VI', 'Islas Vírgenes de los Estados Unidos', 'VI', 'VIR'),
+('IL', 'Israel', 'IL', 'ISR'),
+('IT', 'Italia', 'IT', 'ITA'),
+('JM', 'Jamaica', 'JM', 'JAM'),
+('JP', 'Japón', 'JP', 'JPN'),
+('JE', 'Jersey', 'JE', 'JEY'),
+('JO', 'Jordania', 'JO', 'JOR'),
+('KZ', 'Kazajistán', 'KZ', 'KAZ'),
+('KE', 'Kenia', 'KE', 'KEN'),
+('KG', 'Kirguistán', 'KG', 'KGZ'),
+('KI', 'Kiribati', 'KI', 'KIR'),
+('XK', 'Kosovo', 'XK', 'XKX'),
+('KW', 'Kuwait', 'KW', 'KWT'),
+('LA', 'Laos', 'LA', 'LAO'),
+('LS', 'Lesoto', 'LS', 'LSO'),
+('LV', 'Letonia', 'LV', 'LVA'),
+('LB', 'Libano', 'LB', 'LBN'),
+('LR', 'Liberia', 'LR', 'LBR'),
+('LY', 'Libia', 'LY', 'LBY'),
+('LI', 'Liechtenstein', 'LI', 'LIE'),
+('LT', 'Lituania', 'LT', 'LTU'),
+('LU', 'Luxemburgo', 'LU', 'LUX'),
+('MO', 'Macao', 'MO', 'MAC'),
+('MK', 'Macedonia', 'MK', 'MKD'),
+('MG', 'Madagascar', 'MG', 'MDG'),
+('MY', 'Malasia', 'MY', 'MYS'),
+('MW', 'Malawi', 'MW', 'MWI'),
+('MV', 'Maldivas', 'MV', 'MDV'),
+('ML', 'Mali', 'ML', 'MLI'),
+('MT', 'Malta', 'MT', 'MLT'),
+('MA', 'Marruecos', 'MA', 'MAR'),
+('MQ', 'Martinica', 'MQ', 'MTQ'),
+('MU', 'Mauricio', 'MU', 'MUS'),
+('MR', 'Mauritania', 'MR', 'MRT'),
+('YT', 'Mayotte', 'YT', 'MYT'),
+('MX', 'México', 'MX', 'MEX'),
+('MD', 'Moldavia', 'MD', 'MDA'),
+('MC', 'Monaco', 'MC', 'MCO'),
+('MN', 'Mongolia', 'MN', 'MNG'),
+('ME', 'Montenegro', 'ME', 'MNE'),
+('MS', 'Montserrat', 'MS', 'MSR'),
+('MZ', 'Mozambique', 'MZ', 'MOZ'),
+('NA', 'Namibia', 'NA', 'NAM'),
+('NR', 'Nauru', 'NR', 'NRU'),
+('NP', 'Nepal', 'NP', 'NPL'),
+('NI', 'Nicaragua', 'NI', 'NIC'),
+('NE', 'Niger', 'NE', 'NER'),
+('NG', 'Nigeria', 'NG', 'NGA'),
+('NU', 'Niue', 'NU', 'NIU'),
+('NO', 'Noruega', 'NO', 'NOR'),
+('NC', 'Nueva Caledonia', 'NC', 'NCL'),
+('NZ', 'Nueva Zelandia', 'NZ', 'NZL'),
+('OM', 'Omán', 'OM', 'OMN'),
+('NL', 'Países Bajos', 'NL', 'NLD'),
+('PK', 'Pakistán', 'PK', 'PAK'),
+('PW', 'Palaos', 'PW', 'PLW'),
+('PS', 'Palestina', 'PS', 'PSE'),
+('PA', 'Panamá', 'PA', 'PAN'),
+('PG', 'Papúa Nueva Guinea', 'PG', 'PNG'),
+('PY', 'Paraguay', 'PY', 'PRY'),
+('PE', 'Perú', 'PE', 'PER'),
+('PF', 'Polinesia Francesa', 'PF', 'PYF'),
+('PL', 'Polonia', 'PL', 'POL'),
+('PT', 'Portugal', 'PT', 'PRT'),
+('PR', 'Puerto Rico', 'PR', 'PRI'),
+('GB', 'Reino Unido', 'GB', 'GBR'),
+('EH', 'República árabe Saharaui Democrática', 'EH', 'ESH'),
+('CF', 'República Centroafricana', 'CF', 'CAF'),
+('CZ', 'República Checa', 'CZ', 'CZE'),
+('CG', 'República del Congo', 'CG', 'COG'),
+('CD', 'República Democrática del Congo', 'CD', 'COD'),
+('DO', 'República Dominicana', 'DO', 'DOM'),
+('RE', 'Reunión', 'RE', 'REU'),
+('RW', 'Ruanda', 'RW', 'RWA'),
+('RO', 'Rumania', 'RO', 'ROU'),
+('RU', 'Rusia', 'RU', 'RUS'),
+('WS', 'Samoa', 'WS', 'WSM'),
+('AS', 'Samoa Americana', 'AS', 'ASM'),
+('BL', 'San Bartolomé', 'BL', 'BLM'),
+('KN', 'San Cristóbal y Nieves', 'KN', 'KNA'),
+('SM', 'San Marino', 'SM', 'SMR'),
+('MF', 'San Martín', 'MF', 'MAF'),
+('PM', 'San Pedro y Miquelón', 'PM', 'SPM'),
+('VC', 'San Vicente y las Granadinas', 'VC', 'VCT'),
+('LC', 'Santa Lucía', 'LC', 'LCA'),
+('ST', 'Santo Tomé y Príncipe', 'ST', 'STP'),
+('SN', 'Senegal', 'SN', 'SEN'),
+('RS', 'Serbia', 'RS', 'SRB'),
+('SC', 'Seychelles', 'SC', 'SYC'),
+('SL', 'Sierra Leona', 'SL', 'SLE'),
+('SG', 'Singapur', 'SG', 'SGP'),
+('SH', 'Sint Helena, Ascension and Tristan da Cunha', 'SH', 'SHN'),
+('SX', 'Sint-Maarten', 'SX', 'SXM'),
+('SY', 'Siria', 'SY', 'SYR'),
+('SO', 'Somalia', 'SO', 'SOM'),
+('LK', 'Sri Lanka', 'LK', 'LKA'),
+('SZ', 'eSwatini', 'SZ', 'SWZ'),
+('ZA', 'Sudáfrica', 'ZA', 'ZAF'),
+('SD', 'Sudán', 'SD', 'SDN'),
+('SS', 'Sudán del Sur', 'SS', 'SSD'),
+('SE', 'Suecia', 'SE', 'SWE'),
+('CH', 'Suiza', 'CH', 'CHE'),
+('SR', 'Surinam', 'SR', 'SUR'),
+('TH', 'Tailandia', 'TH', 'THA'),
+('TW', 'Taiwan', 'TW', 'TWN'),
+('TZ', 'Tanzania', 'TZ', 'TZA'),
+('TJ', 'Tayikistán', 'TJ', 'TJK'),
+('IO', 'Territorio Británico del Océano índico', 'IO', 'IOT'),
+('TF', 'Tierras Australes y Antárticas Francesas', 'TF', 'ATF'),
+('TL', 'Timor Oriental', 'TL', 'TLS'),
+('TG', 'Togo', 'TG', 'TGO'),
+('TK', 'Tokelau', 'TK', 'TKL'),
+('TO', 'Tonga', 'TO', 'TON'),
+('TT', 'Trinidad y Tobago', 'TT', 'TTO'),
+('TN', 'Túnez', 'TN', 'TUN'),
+('TM', 'Turkmenistán', 'TM', 'TKM'),
+('TR', 'Turquía', 'TR', 'TUR'),
+('TV', 'Tuvalu', 'TV', 'TUV'),
+('UA', 'Ucrania', 'UA', 'UKR'),
+('UG', 'Uganda', 'UG', 'UGA'),
+('UY', 'Uruguay', 'UY', 'URY'),
+('UZ', 'Uzbekistán', 'UZ', 'UZB'),
+('VU', 'Vanuatu', 'VU', 'VUT'),
+('VA', 'Vaticano', 'VA', 'VAT'),
+('VE', 'Venezuela', 'VE', 'VEN'),
+('VN', 'Vietnam', 'VN', 'VNM'),
+('WF', 'Wallis y Futuna', 'WF', 'WLF'),
+('YE', 'Yemen', 'YE', 'YEM'),
+('DJ', 'Yibuti', 'DJ', 'DJI'),
+('ZM', 'Zambia', 'ZM', 'ZMB'),
+('ZW', 'Zimbabwe', 'ZW', 'ZWE');
+
+
+-- Insertar categorías de subdivisión
+INSERT INTO subdivisioncategories (description) VALUES
+('Departamento'),
+('Distrito Capital'),
+('Archipiélago');
+
+-- Insertar departamentos y regiones de Colombia
+INSERT INTO staterregions (code, name, country_id, code3166, subdivision_id) VALUES
+('05', 'Antioquia', 'CO', 'CO-ANT', 1),
+('08', 'Atlántico', 'CO', 'CO-ATL', 1),
+('11', 'Bogotá D.C.', 'CO', 'CO-DC', 2),
+('13', 'Bolívar', 'CO', 'CO-BOL', 1),
+('15', 'Boyacá', 'CO', 'CO-BOY', 1),
+('17', 'Caldas', 'CO', 'CO-CAL', 1),
+('18', 'Caquetá', 'CO', 'CO-CAQ', 1),
+('19', 'Cauca', 'CO', 'CO-CAU', 1),
+('20', 'Cesar', 'CO', 'CO-CES', 1),
+('23', 'Córdoba', 'CO', 'CO-COR', 1),
+('25', 'Cundinamarca', 'CO', 'CO-CUN', 1),
+('27', 'Chocó', 'CO', 'CO-CHO', 1),
+('41', 'Huila', 'CO', 'CO-HUI', 1),
+('44', 'La Guajira', 'CO', 'CO-LAG', 1),
+('47', 'Magdalena', 'CO', 'CO-MAG', 1),
+('50', 'Meta', 'CO', 'CO-MET', 1),
+('52', 'Nariño', 'CO', 'CO-NAR', 1),
+('54', 'Norte de Santander', 'CO', 'CO-NSA', 1),
+('63', 'Quindío', 'CO', 'CO-QUI', 1),
+('66', 'Risaralda', 'CO', 'CO-RIS', 1),
+('68', 'Santander', 'CO', 'CO-SAN', 1),
+('70', 'Sucre', 'CO', 'CO-SUC', 1),
+('73', 'Tolima', 'CO', 'CO-TOL', 1),
+('76', 'Valle del Cauca', 'CO', 'CO-VAC', 1),
+('81', 'Arauca', 'CO', 'CO-ARA', 1),
+('85', 'Casanare', 'CO', 'CO-CAS', 1),
+('86', 'Putumayo', 'CO', 'CO-PUT', 1),
+('88', 'Archipiélago de San Andrés, Providencia y Santa Catalina', 'CO', 'CO-SAP', 3),
+('91', 'Amazonas', 'CO', 'CO-AMA', 1),
+('94', 'Guainía', 'CO', 'CO-GUA', 1),
+('95', 'Guaviare', 'CO', 'CO-GUV', 1),
+('97', 'Vaupés', 'CO', 'CO-VAU', 1),
+('99', 'Vichada', 'CO', 'CO-VID', 1);
+
+-- Insertar ciudades y municipios principales de Colombia (muestra representativa)
+INSERT INTO citiesormunicipalities (code, name, statereg_id) VALUES
+-- Antioquia
+('05001', 'Medellín', '05'),
+('05088', 'Bello', '05'),
+('05266', 'Envigado', '05'),
+('05360', 'Itagüí', '05'),
+('05615', 'Rionegro', '05'),
+('05045', 'Apartadó', '05'),
+('05837', 'Turbo', '05'),
+
+-- Atlántico
+('08001', 'Barranquilla', '08'),
+('08758', 'Soledad', '08'),
+('08433', 'Malambo', '08'),
+('08520', 'Palmar de Varela', '08'),
+('08573', 'Puerto Colombia', '08'),
+
+-- Bogotá D.C.
+('11001', 'Bogotá', '11'),
+
+-- Bolívar
+('13001', 'Cartagena', '13'),
+('13430', 'Magangué', '13'),
+('13836', 'Turbaco', '13'),
+
+-- Boyacá
+('15001', 'Tunja', '15'),
+('15238', 'Duitama', '15'),
+('15759', 'Sogamoso', '15'),
+('15407', 'Villa de Leyva', '15'),
+
+-- Caldas
+('17001', 'Manizales', '17'),
+('17380', 'La Dorada', '17'),
+('17174', 'Chinchiná', '17'),
+
+-- Caquetá
+('18001', 'Florencia', '18'),
+('18753', 'San Vicente del Caguán', '18'),
+
+-- Cauca
+('19001', 'Popayán', '19'),
+('19698', 'Santander de Quilichao', '19'),
+
+-- Cesar
+('20001', 'Valledupar', '20'),
+('20011', 'Aguachica', '20'),
+
+-- Córdoba
+('23001', 'Montería', '23'),
+('23417', 'Lorica', '23'),
+
+-- Cundinamarca
+('25290', 'Fusagasugá', '25'),
+('25307', 'Girardot', '25'),
+('25175', 'Chía', '25'),
+('25754', 'Soacha', '25'),
+('25126', 'Cajicá', '25'),
+('25899', 'Zipaquirá', '25'),
+
+-- Chocó
+('27001', 'Quibdó', '27'),
+
+-- Huila
+('41001', 'Neiva', '41'),
+('41551', 'Pitalito', '41'),
+('41298', 'Garzón', '41'),
+
+-- La Guajira
+('44001', 'Riohacha', '44'),
+('44430', 'Maicao', '44'),
+
+-- Magdalena
+('47001', 'Santa Marta', '47'),
+('47189', 'Ciénaga', '47'),
+
+-- Meta
+('50001', 'Villavicencio', '50'),
+('50006', 'Acacías', '50'),
+
+-- Nariño
+('52001', 'Pasto', '52'),
+('52835', 'Tumaco', '52'),
+('52356', 'Ipiales', '52'),
+
+-- Norte de Santander
+('54001', 'Cúcuta', '54'),
+('54498', 'Ocaña', '54'),
+('54518', 'Pamplona', '54'),
+
+-- Quindío
+('63001', 'Armenia', '63'),
+('63130', 'Calarcá', '63'),
+('63470', 'Montenegro', '63'),
+
+-- Risaralda
+('66001', 'Pereira', '66'),
+('66170', 'Dosquebradas', '66'),
+('66682', 'Santa Rosa de Cabal', '66'),
+
+-- Santander
+('68001', 'Bucaramanga', '68'),
+('68276', 'Floridablanca', '68'),
+('68307', 'Girón', '68'),
+('68547', 'Piedecuesta', '68'),
+('68081', 'Barrancabermeja', '68'),
+
+-- Sucre
+('70001', 'Sincelejo', '70'),
+
+-- Tolima
+('73001', 'Ibagué', '73'),
+('73268', 'Espinal', '73'),
+('73443', 'Mariquita', '73'),
+
+-- Valle del Cauca
+('76001', 'Cali', '76'),
+('76109', 'Buenaventura', '76'),
+('76520', 'Palmira', '76'),
+('76111', 'Guadalajara de Buga', '76'),
+('76147', 'Cartago', '76'),
+('76834', 'Tuluá', '76'),
+
+-- Arauca
+('81001', 'Arauca', '81'),
+('81736', 'Saravena', '81'),
+
+-- Casanare
+('85001', 'Yopal', '85'),
+
+-- Putumayo
+('86001', 'Mocoa', '86'),
+('86568', 'Puerto Asís', '86'),
+
+-- San Andrés
+('88001', 'San Andrés', '88'),
+('88564', 'Providencia', '88'),
+
+-- Amazonas
+('91001', 'Leticia', '91'),
+
+-- Guainía
+('94001', 'Inírida', '94'),
+
+-- Guaviare
+('95001', 'San José del Guaviare', '95'),
+
+-- Vaupés
+('97001', 'Mitú', '97'),
+
+-- Vichada
+('99001', 'Puerto Carreño', '99');
+
+-- Insertar tipos de identificación
+INSERT INTO typesidentifications (description, sufix) VALUES
+('Número de Identificación Tributaria', 'NIT'),
+('Cédula de Ciudadanía', 'CC'),
+('Cédula de Extranjería', 'CE'),
+('Pasaporte', 'PP'),
+('Tarjeta de Identidad', 'TI'),
+('Registro Civil', 'RC');
+
+-- Insertar audiencias
+INSERT INTO audiences (description) VALUES
+('Niños (0-12 años)'),
+('Adolescentes (13-17 años)'),
+('Jóvenes (18-25 años)'),
+('Adultos (26-59 años)'),
+('Adultos Mayores (60+ años)'),
+('Familias'),
+('Empresas'),
+('Instituciones');
+
+-- Insertar categorías de productos
+INSERT INTO categories (description) VALUES
+('Electrónicos y Tecnología'),
+('Ropa y Accesorios'),
+('Alimentos y Bebidas'),
+('Hogar y Jardín'),
+('Deportes y Recreación'),
+('Salud y Belleza'),
+('Libros y Educación'),
+('Automóviles y Repuestos'),
+('Servicios Profesionales'),
+('Entretenimiento'),
+('Mascotas'),
+('Construcción y Herramientas'),
+('Arte y Manualidades'),
+('Música e Instrumentos'),
+('Viajes y Turismo');
+
+-- Insertar unidades de medida
+INSERT INTO unitfmeasure (description) VALUES
+('Unidad'),
+('Kilogramo'),
+('Gramo'),
+('Litro'),
+('Mililitro'),
+('Metro'),
+('Centímetro'),
+('Metro cuadrado'),
+('Metro cúbico'),
+('Caja'),
+('Paquete'),
+('Docena'),
+('Par'),
+('Juego'),
+('Rollo'),
+('Botella'),
+('Lata'),
+('Bolsa'),
+('Sobre'),
+('Pieza');
+
+-- Insertar categorías de encuestas
+INSERT INTO categories_polls (name) VALUES
+('Satisfacción del Cliente'),
+('Calidad del Producto'),
+('Servicio al Cliente'),
+('Experiencia de Compra'),
+('Recomendación del Producto'),
+('Facilidad de Uso'),
+('Relación Precio-Calidad'),
+('Tiempo de Entrega'),
+('Atención Post-Venta'),
+('Innovación del Producto');
+
+-- Insertar períodos de membresía
+INSERT INTO periods (name) VALUES
+('Mensual'),
+('Bimestral'),
+('Trimestral'),
+('Semestral'),
+('Anual'),
+('Bianual');
+
+-- Insertar beneficios
+INSERT INTO benefits (description, detail) VALUES
+('Descuento en compras', 'Descuento del 5% al 15% en todas las compras según el plan'),
+('Envío gratis', 'Envío gratuito en compras superiores a cierto monto'),
+('Soporte prioritario', 'Atención al cliente con prioridad y tiempos de respuesta reducidos'),
+('Productos exclusivos', 'Acceso a productos no disponibles para usuarios regulares'),
+('Devoluciones extendidas', 'Período de devolución extendido hasta 60 días'),
+('Puntos de fidelidad', 'Acumulación de puntos por cada compra realizada'),
+('Acceso anticipado', 'Acceso temprano a ofertas y nuevos productos'),
+('Consultoría gratuita', 'Asesoría personalizada sin costo adicional'),
+('Garantía extendida', 'Extensión de garantía en productos seleccionados'),
+('Eventos exclusivos', 'Invitaciones a eventos y lanzamientos especiales');
+
+-- Insertar membresías
+INSERT INTO memberships (name, description, features, status) VALUES
+('Básica', 'Membresía básica con beneficios estándar', '{"descuentos": "5%", "soporte": "email", "puntos": "1x"}', 'ACTIVE'),
+('Premium', 'Membresía premium con beneficios mejorados', '{"descuentos": "10%", "soporte": "24/7", "envio_gratis": true, "puntos": "2x"}', 'ACTIVE'),
+('VIP', 'Membresía VIP con todos los beneficios', '{"descuentos": "15%", "soporte": "24/7", "envio_gratis": true, "productos_exclusivos": true, "puntos": "3x"}', 'ACTIVE'),
+('Empresarial', 'Membresía para empresas con beneficios corporativos', '{"descuentos": "20%", "soporte": "dedicado", "facturacion_empresarial": true, "credito": true}', 'ACTIVE');
+
+-- Insertar beneficios de membresía
+INSERT INTO membershipbenefits (membership_id, period_id, benefit_id) VALUES
+-- Membresía Básica
+(1, 1, 1), (1, 1, 6), -- Mensual
+(1, 3, 1), (1, 3, 6), (1, 3, 5), -- Trimestral
+(1, 5, 1), (1, 5, 6), (1, 5, 5), (1, 5, 9), -- Anual
+
+-- Membresía Premium
+(2, 1, 1), (2, 1, 2), (2, 1, 3), (2, 1, 6), -- Mensual
+(2, 3, 1), (2, 3, 2), (2, 3, 3), (2, 3, 5), (2, 3, 6), (2, 3, 7), -- Trimestral
+(2, 5, 1), (2, 5, 2), (2, 5, 3), (2, 5, 5), (2, 5, 6), (2, 5, 7), (2, 5, 9), -- Anual
+
+-- Membresía VIP
+(3, 1, 1), (3, 1, 2), (3, 1, 3), (3, 1, 4), (3, 1, 6), (3, 1, 7), -- Mensual
+(3, 3, 1), (3, 3, 2), (3, 3, 3), (3, 3, 4), (3, 3, 5), (3, 3, 6), (3, 3, 7), (3, 3, 10), -- Trimestral
+(3, 5, 1), (3, 5, 2), (3, 5, 3), (3, 5, 4), (3, 5, 5), (3, 5, 6), (3, 5, 7), (3, 5, 8), (3, 5, 9), (3, 5, 10), -- Anual
+
+-- Membresía Empresarial
+(4, 3, 1), (4, 3, 2), (4, 3, 3), (4, 3, 8), -- Trimestral
+(4, 5, 1), (4, 5, 2), (4, 5, 3), (4, 5, 8), (4, 5, 9); -- Anual
+
+-- Insertar beneficios por audiencia
+INSERT INTO audiencebenefits (audience_id, benefit_id) VALUES
+(1, 1), (1, 2), (1, 5), -- Niños
+(2, 1), (2, 6), (2, 7), -- Adolescentes
+(3, 1), (3, 2), (3, 6), (3, 7), -- Jóvenes
+(4, 1), (4, 2), (4, 3), (4, 6), (4, 8), -- Adultos
+(5, 1), (5, 3), (5, 5), (5, 8), -- Adultos Mayores
+(6, 1), (6, 2), (6, 5), (6, 6), -- Familias
+(7, 1), (7, 3), (7, 8), (7, 9), -- Empresas
+(8, 3), (8, 8), (8, 9); -- Instituciones
+
+-- Insertar empresas colombianas representativas
+INSERT INTO companies (id, type_id, name, category_id, city_id, audience_id, cellphone, email) VALUES
+-- Empresas de Medellín
+('900123456', 1, 'TechCorp Medellín SAS', 1, '05001', 4, '3001234567', 'contacto@techcorp.com.co'),
+('900234567', 1, 'Moda Antioqueña Ltda', 2, '05001', 3, '3007654321', 'ventas@modaantioquia.com'),
+('900345678', 1, 'Alimentos del Valle SAS', 3, '05001', 6, '3009876543', 'info@alimentosvalle.co'),
+
+-- Empresas de Bogotá
+('900456789', 1, 'Innovación Digital SA', 1, '11001', 7, '3101234567', 'contacto@innovaciondigital.co'),
+('900567890', 1, 'Construcciones Bogotá SAS', 12, '11001', 7, '3207654321', 'proyectos@construccionesbogota.co'),
+('900678901', 1, 'Servicios Profesionales Capital', 9, '11001', 7, '3309876543', 'servicios@spcapital.com.co'),
+
+-- Empresas de Cali
+('900789012', 1, 'Deportes Valle SAS', 5, '76001', 3, '3401234567', 'ventas@deportesvalle.co'),
+('900890123', 1, 'Belleza y Salud Cali', 6, '76001', 4, '3507654321', 'info@bellezacali.com'),
+
+-- Empresas de Barranquilla
+('900901234', 1, 'Comercio Caribe Ltda', 3, '08001', 6, '3601234567', 'comercio@caribe.co'),
+('901012345', 1, 'Tecnología Costa SAS', 1, '08001', 7, '3707654321', 'tech@costa.com.co'),
+
+-- Empresas de Cartagena
+('901123456', 1, 'Turismo Cartagena SA', 15, '13001', 4, '3801234567', 'reservas@turismocartagena.co'),
+
+-- Empresas de Bucaramanga
+('901234567', 1, 'Industrias Santander SAS', 12, '68001', 7, '3901234567', 'industrias@santander.co'),
+
+-- Empresas de Pereira
+('901345678', 1, 'Café Premium Risaralda', 3, '66001', 4, '3101234568', 'cafe@risaralda.co'),
+
+-- Empresas de Manizales
+('901456789', 1, 'Textiles Caldas Ltda', 2, '17001', 4, '3201234568', 'textiles@caldas.co'),
+
+-- Empresas de Ibagué
+('901567890', 1, 'Música Tolima SAS', 14, '73001', 3, '3301234568', 'musica@tolima.co');
+
+-- Insertar productos representativos
+INSERT INTO products (name, description, category_id, unit_id, status) VALUES
+-- Electrónicos
+('Smartphone Galaxy Pro', 'Teléfono inteligente de última generación con cámara de 108MP', 1, 1, 'ACTIVE'),
+('Laptop Gaming Asus', 'Computador portátil para gaming con RTX 4060', 1, 1, 'ACTIVE'),
+('Smart TV 55 pulgadas', 'Televisor inteligente 4K con sistema Android', 1, 1, 'ACTIVE'),
+('Auriculares Bluetooth', 'Auriculares inalámbricos con cancelación de ruido', 1, 1, 'ACTIVE'),
+('Tablet iPad Air', 'Tablet de 10.9 pulgadas con chip M1', 1, 1, 'ACTIVE'),
+
+-- Ropa y Accesorios
+('Camiseta Polo Hombre', 'Camiseta polo de algodón 100% para hombre', 2, 1, 'ACTIVE'),
+('Vestido Casual Mujer', 'Vestido casual de verano para mujer', 2, 1, 'ACTIVE'),
+('Zapatos Deportivos Nike', 'Zapatos deportivos para running', 2, 13, 'ACTIVE'),
+('Bolso de Cuero', 'Bolso de cuero genuino para mujer', 2, 1, 'ACTIVE'),
+('Reloj Inteligente', 'Smartwatch con monitor de salud', 2, 1, 'ACTIVE'),
+
+-- Alimentos y Bebidas
+('Café Premium Colombiano', 'Café 100% colombiano de origen único', 3, 2, 'ACTIVE'),
+('Arepa Antioqueña', 'Arepa tradicional antioqueña congelada', 3, 10, 'ACTIVE'),
+('Panela Orgánica', 'Panela orgánica en bloque', 3, 2, 'ACTIVE'),
+('Aguacate Hass', 'Aguacate Hass fresco de exportación', 3, 2, 'ACTIVE'),
+('Cerveza Artesanal', 'Cerveza artesanal colombiana', 3, 16, 'ACTIVE'),
+
+-- Hogar y Jardín
+('Sofá Modular', 'Sofá modular de 3 puestos en tela', 4, 1, 'ACTIVE'),
+('Mesa de Comedor', 'Mesa de comedor para 6 personas en madera', 4, 1, 'ACTIVE'),
+('Plantas Ornamentales', 'Plantas decorativas para interior', 4, 1, 'ACTIVE'),
+('Juego de Sábanas', 'Juego de sábanas de algodón egipcio', 4, 14, 'ACTIVE'),
+('Electrodomésticos Cocina', 'Licuadora de alta potencia', 4, 1, 'ACTIVE'),
+
+-- Deportes y Recreación
+('Bicicleta Montaña', 'Bicicleta de montaña aro 29', 5, 1, 'ACTIVE'),
+('Balón de Fútbol', 'Balón oficial de fútbol FIFA', 5, 1, 'ACTIVE'),
+('Raqueta de Tenis', 'Raqueta profesional de tenis', 5, 1, 'ACTIVE'),
+('Pesas Ajustables', 'Set de pesas ajustables para gimnasio', 5, 14, 'ACTIVE'),
+('Tabla de Surf', 'Tabla de surf profesional', 5, 1, 'ACTIVE'),
+
+-- Salud y Belleza
+('Crema Facial Antiarrugas', 'Crema facial con colágeno y vitamina E', 6, 5, 'ACTIVE'),
+('Champú Orgánico', 'Champú orgánico sin sulfatos', 6, 5, 'ACTIVE'),
+('Suplemento Vitamínico', 'Multivitamínico completo', 6, 1, 'ACTIVE'),
+('Perfume Unisex', 'Fragancia unisex de larga duración', 6, 5, 'ACTIVE'),
+('Kit de Maquillaje', 'Kit completo de maquillaje profesional', 6, 14, 'ACTIVE'),
+
+-- Libros y Educación
+('Libro Cien Años de Soledad', 'Novela clásica de Gabriel García Márquez', 7, 1, 'ACTIVE'),
+('Curso Online Programación', 'Curso completo de programación web', 7, 1, 'ACTIVE'),
+('Diccionario Español', 'Diccionario completo del español', 7, 1, 'ACTIVE'),
+
+-- Automóviles y Repuestos
+('Llantas Michelin', 'Llantas para automóvil aro 16', 8, 1, 'ACTIVE'),
+('Aceite Motor Sintético', 'Aceite sintético para motor', 8, 4, 'ACTIVE'),
+
+-- Servicios Profesionales
+('Consultoría Empresarial', 'Servicio de consultoría para empresas', 9, 1, 'ACTIVE'),
+('Diseño Gráfico', 'Servicio de diseño gráfico profesional', 9, 1, 'ACTIVE'),
+
+-- Entretenimiento
+('Videojuego PS5', 'Videojuego para PlayStation 5', 10, 1, 'ACTIVE'),
+('Entrada Concierto', 'Entrada para concierto musical', 10, 1, 'ACTIVE'),
+
+-- Mascotas
+('Alimento para Perros', 'Alimento premium para perros adultos', 11, 2, 'ACTIVE'),
+('Juguete para Gatos', 'Juguete interactivo para gatos', 11, 1, 'ACTIVE'),
+
+-- Construcción y Herramientas
+('Taladro Eléctrico', 'Taladro eléctrico profesional', 12, 1, 'ACTIVE'),
+('Cemento Portland', 'Cemento para construcción', 12, 2, 'ACTIVE'),
+
+-- Arte y Manualidades
+('Set de Pinceles', 'Set completo de pinceles para pintura', 13, 14, 'ACTIVE'),
+('Lienzo para Pintura', 'Lienzo preparado para óleo', 13, 1, 'ACTIVE'),
+
+-- Música e Instrumentos
+('Guitarra Acústica', 'Guitarra acústica de madera', 14, 1, 'ACTIVE'),
+('Piano Digital', 'Piano digital de 88 teclas', 14, 1, 'ACTIVE'),
+
+-- Viajes y Turismo
+('Paquete Turístico Caribe', 'Paquete todo incluido al Caribe colombiano', 15, 1, 'ACTIVE'),
+('Maleta de Viaje', 'Maleta rígida para viajes', 15, 1, 'ACTIVE');
+
+-- Relacionar empresas con productos y precios
+INSERT INTO companyproducts (company_id, product_id, price, unitfmeasure_id, status) VALUES
+-- TechCorp Medellín - Electrónicos
+('900123456', 1, 899999.00, 1, 'ACTIVE'),
+('900123456', 2, 2499999.00, 1, 'ACTIVE'),
+('900123456', 3, 1299999.00, 1, 'ACTIVE'),
+('900123456', 4, 299999.00, 1, 'ACTIVE'),
+('900123456', 5, 1899999.00, 1, 'ACTIVE'),
+
+-- Moda Antioqueña - Ropa
+('900234567', 6, 89999.00, 1, 'ACTIVE'),
+('900234567', 7, 149999.00, 1, 'ACTIVE'),
+('900234567', 8, 299999.00, 13, 'ACTIVE'),
+('900234567', 9, 199999.00, 1, 'ACTIVE'),
+('900234567', 10, 399999.00, 1, 'ACTIVE'),
+
+-- Alimentos del Valle - Alimentos
+('900345678', 11, 25999.00, 2, 'ACTIVE'),
+('900345678', 12, 8999.00, 10, 'ACTIVE'),
+('900345678', 13, 12999.00, 2, 'ACTIVE'),
+('900345678', 14, 4999.00, 2, 'ACTIVE'),
+('900345678', 15, 8999.00, 16, 'ACTIVE'),
+
+-- Innovación Digital - Electrónicos
+('900456789', 1, 949999.00, 1, 'ACTIVE'),
+('900456789', 2, 2599999.00, 1, 'ACTIVE'),
+('900456789', 32, 79999.00, 1, 'ACTIVE'),
+
+-- Construcciones Bogotá - Hogar
+('900567890', 16, 1299999.00, 1, 'ACTIVE'),
+('900567890', 17, 899999.00, 1, 'ACTIVE'),
+('900567890', 20, 2999999.00, 1, 'ACTIVE'),
+('900567890', 39, 199999.00, 1, 'ACTIVE'),
+('900567890', 40, 89999.00, 2, 'ACTIVE'),
+
+-- Servicios Profesionales Capital
+('900678901', 33, 500000.00, 1, 'ACTIVE'),
+('900678901', 34, 300000.00, 1, 'ACTIVE'),
+
+-- Deportes Valle - Deportes
+('900789012', 21, 899999.00, 1, 'ACTIVE'),
+('900789012', 22, 89999.00, 1, 'ACTIVE'),
+('900789012', 23, 299999.00, 1, 'ACTIVE'),
+('900789012', 24, 399999.00, 14, 'ACTIVE'),
+('900789012', 25, 1299999.00, 1, 'ACTIVE'),
+
+-- Belleza y Salud Cali
+('900890123', 26, 89999.00, 5, 'ACTIVE'),
+('900890123', 27, 29999.00, 5, 'ACTIVE'),
+('900890123', 28, 49999.00, 1, 'ACTIVE'),
+('900890123', 29, 199999.00, 5, 'ACTIVE'),
+('900890123', 30, 299999.00, 14, 'ACTIVE'),
+
+-- Comercio Caribe - Alimentos
+('900901234', 11, 27999.00, 2, 'ACTIVE'),
+('900901234', 13, 13999.00, 2, 'ACTIVE'),
+('900901234', 14, 5999.00, 2, 'ACTIVE'),
+('900901234', 15, 9999.00, 16, 'ACTIVE'),
+
+-- Tecnología Costa - Electrónicos
+('901012345', 1, 879999.00, 1, 'ACTIVE'),
+('901012345', 4, 279999.00, 1, 'ACTIVE'),
+('901012345', 10, 379999.00, 1, 'ACTIVE'),
+
+-- Turismo Cartagena
+('901123456', 47, 1999999.00, 1, 'ACTIVE'),
+('901123456', 48, 299999.00, 1, 'ACTIVE'),
+
+-- Industrias Santander
+('901234567', 39, 189999.00, 1, 'ACTIVE'),
+('901234567', 40, 79999.00, 2, 'ACTIVE'),
+
+-- Café Premium Risaralda
+('901345678', 11, 29999.00, 2, 'ACTIVE'),
+
+-- Textiles Caldas
+('901456789', 6, 79999.00, 1, 'ACTIVE'),
+('901456789', 7, 139999.00, 1, 'ACTIVE'),
+
+-- Música Tolima
+('901567890', 45, 599999.00, 1, 'ACTIVE'),
+('901567890', 46, 1999999.00, 1, 'ACTIVE');
+
+
+-- Insertar clientes representativos
+INSERT INTO customers (name, city_id, audience_id, cellphone, email, address, status) VALUES
+-- Clientes de Medellín
+('Juan Carlos Pérez Gómez', '05001', 4, '3101234567', 'juan.perez@email.com', 'Calle 10 #45-67, El Poblado', 'ACTIVE'),
+('María Fernanda García López', '05001', 4, '3207654321', 'maria.garcia@email.com', 'Carrera 70 #52-18, Laureles', 'ACTIVE'),
+('Carlos Andrés Rodríguez', '05088', 3, '3309876543', 'carlos.rodriguez@email.com', 'Calle 45 #23-12, Bello', 'ACTIVE'),
+('Ana Sofía Martínez', '05266', 4, '3401234567', 'ana.martinez@email.com', 'Carrera 43A #5-15, Envigado', 'ACTIVE'),
+('Luis Fernando Hernández', '05360', 4, '3507654321', 'luis.hernandez@email.com', 'Calle 77 #50-25, Itagüí', 'ACTIVE'),
+
+-- Clientes de Bogotá
+('Diana Patricia Morales', '11001', 4, '3601234567', 'diana.morales@email.com', 'Carrera 15 #93-47, Chapinero', 'ACTIVE'),
+('Andrés Felipe Vargas', '11001', 3, '3707654321', 'andres.vargas@email.com', 'Calle 127 #15-28, Usaquén', 'ACTIVE'),
+('Claudia Milena Torres', '11001', 4, '3809876543', 'claudia.torres@email.com', 'Carrera 68 #75-45, Engativá', 'ACTIVE'),
+('Roberto Carlos Jiménez', '11001', 4, '3901234567', 'roberto.jimenez@email.com', 'Calle 26 #68-35, Teusaquillo', 'ACTIVE'),
+('Paola Andrea Ruiz', '11001', 4, '3101234568', 'paola.ruiz@email.com', 'Carrera 7 #32-16, La Candelaria', 'ACTIVE'),
+
+-- Clientes de Cali
+('Miguel Ángel Sánchez', '76001', 4, '3201234568', 'miguel.sanchez@email.com', 'Avenida 6N #23-45, Granada', 'ACTIVE'),
+('Alejandra Gómez Parra', '76001', 3, '3301234568', 'alejandra.gomez@email.com', 'Calle 5 #36-18, San Fernando', 'ACTIVE'),
+('Fernando José Castillo', '76520', 4, '3401234568', 'fernando.castillo@email.com', 'Carrera 29 #45-67, Palmira', 'ACTIVE'),
+
+-- Clientes de Barranquilla
+('Sofía Isabel Mendoza', '08001', 4, '3501234568', 'sofia.mendoza@email.com', 'Calle 84 #51-45, Riomar', 'ACTIVE'),
+('Javier Eduardo Restrepo', '08758', 4, '3601234568', 'javier.restrepo@email.com', 'Carrera 30 #48-25, Soledad', 'ACTIVE'),
+
+-- Clientes de Cartagena
+('Valentina Ochoa Silva', '13001', 3, '3701234568', 'valentina.ochoa@email.com', 'Calle del Arsenal #8B-45, Centro Histórico', 'ACTIVE'),
+('Daniel Alejandro Mejía', '13001', 4, '3801234568', 'daniel.mejia@email.com', 'Avenida Pedro de Heredia #31-45, Bocagrande', 'ACTIVE'),
+
+-- Clientes de Bucaramanga
+('Natalia Cristina Vega', '68001', 4, '3901234568', 'natalia.vega@email.com', 'Carrera 27 #45-67, Cabecera', 'ACTIVE'),
+('Sebastián Moreno Díaz', '68276', 3, '3101234569', 'sebastian.moreno@email.com', 'Calle 56 #23-45, Floridablanca', 'ACTIVE'),
+
+-- Clientes de Pereira
+('Isabella Ramírez Cruz', '66001', 4, '3201234569', 'isabella.ramirez@email.com', 'Carrera 14 #25-67, Centro', 'ACTIVE'),
+('Camilo Andrés Ospina', '66170', 3, '3301234569', 'camilo.ospina@email.com', 'Calle 15 #8-45, Dosquebradas', 'ACTIVE'),
+
+-- Clientes de Manizales
+('Gabriela Suárez Londoño', '17001', 4, '3401234569', 'gabriela.suarez@email.com', 'Carrera 23 #65-23, Chipre', 'ACTIVE'),
+
+-- Clientes de Ibagué
+('Nicolás Herrera Aguilar', '73001', 3, '3501234569', 'nicolas.herrera@email.com', 'Calle 60 #2-45, Centro', 'ACTIVE'),
+
+-- Clientes de Armenia
+('Valeria Quintero Arias', '63001', 4, '3601234569', 'valeria.quintero@email.com', 'Carrera 14 #4N-45, Centro', 'ACTIVE'),
+
+-- Clientes de Pasto
+('Esteban Guerrero Muñoz', '52001', 4, '3701234569', 'esteban.guerrero@email.com', 'Calle 18 #25-67, Centro', 'ACTIVE'),
+
+-- Clientes de Cúcuta
+('Mariana López Contreras', '54001', 4, '3801234569', 'mariana.lopez@email.com', 'Avenida 1 #12-45, Centro', 'ACTIVE'),
+
+-- Clientes de Villavicencio
+('Tomás Rincón Peña', '50001', 4, '3901234569', 'tomas.rincon@email.com', 'Carrera 40 #25-67, Centro', 'ACTIVE'),
+
+-- Clientes de Neiva
+('Lucía Fernanda Rojas', '41001', 4, '3101234570', 'lucia.rojas@email.com', 'Calle 7 #5-45, Centro', 'ACTIVE'),
+
+-- Clientes de Santa Marta
+('Mateo Salazar Pineda', '47001', 3, '3201234570', 'mateo.salazar@email.com', 'Carrera 3 #16-45, Rodadero', 'ACTIVE'),
+
+-- Clientes de Montería
+('Camila Escobar Navarro', '23001', 4, '3301234570', 'camila.escobar@email.com', 'Calle 29 #3-67, Centro', 'ACTIVE'),
+
+-- Clientes de Sincelejo
+('Santiago Acosta Bermúdez', '70001', 4, '3401234570', 'santiago.acosta@email.com', 'Carrera 25 #20-45, Centro', 'ACTIVE'),
+
+-- Clientes de Valledupar
+('Antonella Durán Cáceres', '20001', 3, '3501234570', 'antonella.duran@email.com', 'Calle 16 #6-23, Centro', 'ACTIVE'),
+
+-- Clientes de Riohacha
+('Emiliano Castro Villamizar', '44001', 4, '3601234570', 'emiliano.castro@email.com', 'Carrera 7 #3-45, Centro', 'ACTIVE');
+
+
+-- Insertar encuestas
+INSERT INTO polls (name, description, isactive, categorypoll_id) VALUES
+('Satisfacción General 2024', 'Encuesta de satisfacción general del cliente para el año 2024', TRUE, 1),
+('Calidad de Productos Electrónicos', 'Evaluación específica de la calidad de productos electrónicos', TRUE, 2),
+('Servicio al Cliente Post-Venta', 'Evaluación del servicio de atención después de la compra', TRUE, 3),
+('Experiencia de Compra Online', 'Evaluación de la experiencia de compra en línea', TRUE, 4),
+('Recomendación de Productos', 'Encuesta sobre la probabilidad de recomendar productos', TRUE, 5),
+('Facilidad de Uso de Productos', 'Evaluación de qué tan fácil es usar los productos', TRUE, 6),
+('Relación Precio-Calidad', 'Evaluación de la relación entre precio y calidad', TRUE, 7),
+('Tiempo de Entrega', 'Evaluación de los tiempos de entrega de productos', TRUE, 8),
+('Atención Post-Venta', 'Evaluación del servicio después de la venta', TRUE, 9),
+('Innovación de Productos', 'Evaluación de la innovación en productos', TRUE, 10);
+
+-- Insertar calificaciones representativas
+INSERT INTO rates (customer_id, product_id, company_id, poll_id, rating, comment) VALUES
+-- Calificaciones de productos electrónicos
+(1, 1, '900123456', 1, 5, 'Excelente smartphone, muy buena calidad de cámara y batería duradera'),
+(2, 1, '900123456', 2, 4, 'Buena calidad del producto, cumple con las expectativas'),
+(3, 2, '900123456', 1, 5, 'Laptop perfecta para gaming, excelente rendimiento'),
+(4, 3, '900123456', 1, 4, 'Smart TV con buena calidad de imagen, fácil de usar'),
+(5, 4, '900123456', 2, 5, 'Auriculares con excelente calidad de sonido'),
+
+-- Calificaciones de ropa y accesorios
+(6, 6, '900234567', 1, 4, 'Camiseta de buena calidad, tela cómoda'),
+(7, 7, '900234567', 1, 5, 'Vestido hermoso, excelente calidad y diseño'),
+(8, 8, '900234567', 1, 4, 'Zapatos cómodos para correr, buena amortiguación'),
+(9, 9, '900234567', 1, 5, 'Bolso de excelente calidad, muy resistente'),
+(10, 10, '900234567', 2, 4, 'Reloj inteligente con buenas funciones'),
+
+-- Calificaciones de alimentos
+(11, 11, '900345678', 1, 5, 'Café delicioso, aroma y sabor excepcionales'),
+(12, 12, '900345678', 1, 4, 'Arepas tradicionales, buen sabor casero'),
+(13, 13, '900345678', 1, 5, 'Panela orgánica de excelente calidad'),
+(14, 14, '900345678', 1, 4, 'Aguacates frescos y de buen tamaño'),
+(15, 15, '900345678', 1, 3, 'Cerveza artesanal con sabor interesante'),
+
+-- Calificaciones de hogar
+(16, 16, '900567890', 1, 4, 'Sofá cómodo y de buena calidad'),
+(17, 17, '900567890', 1, 5, 'Mesa resistente y bien terminada'),
+(18, 20, '900567890', 1, 4, 'Electrodoméstico funcional y eficiente'),
+
+-- Calificaciones de deportes
+(19, 21, '900789012', 1, 5, 'Bicicleta excelente para montaña, muy resistente'),
+(20, 22, '900789012', 1, 4, 'Balón de buena calidad para fútbol'),
+(21, 23, '900789012', 1, 4, 'Raqueta profesional, buen balance'),
+
+-- Calificaciones de belleza y salud
+(22, 26, '900890123', 1, 5, 'Crema facial efectiva, piel más suave'),
+(23, 27, '900890123', 1, 4, 'Champú que deja el cabello sedoso'),
+(24, 28, '900890123', 1, 4, 'Suplemento que me ha dado más energía'),
+
+-- Calificaciones adicionales para variedad
+(1, 2, '900456789', 3, 4, 'Buen servicio post-venta, resolvieron mis dudas'),
+(2, 3, '900123456', 4, 5, 'Experiencia de compra online excelente'),
+(3, 1, '901012345', 5, 5, 'Definitivamente recomendaría este producto'),
+(4, 4, '901012345', 6, 4, 'Producto fácil de usar y configurar'),
+(5, 11, '901345678', 7, 5, 'Excelente relación precio-calidad'),
+(6, 11, '900901234', 8, 4, 'Entrega rápida y producto en perfecto estado'),
+(7, 6, '901456789', 9, 4, 'Buena atención después de la compra'),
+(8, 45, '901567890', 10, 5, 'Producto innovador y de alta calidad'),
+
+-- Más calificaciones para completar datos
+(9, 1, '900123456', 1, 4, 'Smartphone con buenas características, recomendado'),
+(10, 2, '900123456', 1, 5, 'Laptop excepcional para trabajo y entretenimiento'),
+(11, 11, '900345678', 1, 5, 'El mejor café que he probado'),
+(12, 6, '900234567', 1, 3, 'Camiseta regular, esperaba mejor calidad'),
+(13, 21, '900789012', 1, 5, 'Bicicleta perfecta para mis necesidades'),
+(14, 26, '900890123', 1, 4, 'Crema efectiva, buenos resultados'),
+(15, 16, '900567890', 1, 4, 'Sofá cómodo para la familia'),
+(16, 3, '900123456', 2, 4, 'TV con buena calidad de imagen'),
+(17, 7, '900234567', 1, 5, 'Vestido hermoso, muy elegante'),
+(18, 12, '900345678', 1, 4, 'Arepas sabrosas, como las de casa'),
+(19, 22, '900789012', 1, 4, 'Balón resistente y de buen rebote'),
+(20, 27, '900890123', 1, 5, 'Champú que realmente funciona'),
+(21, 1, '900456789', 1, 4, 'Buen smartphone, batería duradera'),
+(22, 11, '900901234', 1, 5, 'Café premium, vale la pena el precio'),
+(23, 8, '900234567', 1, 4, 'Zapatos cómodos para ejercicio'),
+(24, 17, '900567890', 1, 5, 'Mesa de excelente calidad y diseño'),
+(25, 4, '900123456', 1, 4, 'Auriculares con buen sonido'),
+(26, 13, '900345678', 1, 5, 'Panela orgánica, sabor auténtico'),
+(27, 9, '900234567', 1, 4, 'Bolso resistente y funcional'),
+(28, 23, '900789012', 1, 4, 'Raqueta de buena calidad'),
+(29, 28, '900890123', 1, 3, 'Suplemento regular, no vi grandes cambios'),
+(30, 2, '900123456', 1, 5, 'Laptop increíble para gaming');
+
+
+-- Insertar listas de favoritos
+INSERT INTO favorites (customer_id, name, description) VALUES
+(1, 'Mis Electrónicos Favoritos', 'Productos tecnológicos que me interesan'),
+(1, 'Para el Hogar', 'Productos para mejorar mi hogar'),
+(2, 'Moda y Estilo', 'Ropa y accesorios que me gustan'),
+(2, 'Belleza Personal', 'Productos de cuidado personal'),
+(3, 'Gaming Setup', 'Todo para mi setup de gaming'),
+(4, 'Vida Saludable', 'Productos para mantener un estilo de vida saludable'),
+(5, 'Deportes y Ejercicio', 'Equipos deportivos de mi interés'),
+(6, 'Cocina Gourmet', 'Productos para cocinar como un chef'),
+(7, 'Tecnología Móvil', 'Dispositivos móviles y accesorios'),
+(8, 'Decoración Hogar', 'Ideas para decorar mi casa'),
+(9, 'Fitness y Bienestar', 'Productos para mantenerme en forma'),
+(10, 'Gadgets Inteligentes', 'Dispositivos inteligentes para el hogar'),
+(11, 'Café y Bebidas', 'Los mejores cafés y bebidas'),
+(12, 'Moda Casual', 'Ropa cómoda para el día a día'),
+(13, 'Aventura y Outdoor', 'Equipos para actividades al aire libre'),
+(14, 'Cuidado de la Piel', 'Productos para el cuidado facial'),
+(15, 'Entretenimiento', 'Productos para diversión y entretenimiento'),
+(16, 'Workspace', 'Productos para mi espacio de trabajo'),
+(17, 'Estilo Femenino', 'Moda y accesorios para mujer'),
+(18, 'Alimentación Saludable', 'Productos orgánicos y saludables'),
+(19, 'Deportes Extremos', 'Equipos para deportes de aventura'),
+(20, 'Rutina de Belleza', 'Productos para mi rutina diaria');
+
+-- Insertar detalles de favoritos
+INSERT INTO details_favorites (favorite_id, product_id) VALUES
+-- Electrónicos favoritos del cliente 1
+(1, 1), (1, 2), (1, 3), (1, 4), (1, 5),
+-- Hogar del cliente 1
+(2, 16), (2, 17), (2, 20),
+-- Moda del cliente 2
+(3, 6), (3, 7), (3, 8), (3, 9),
+-- Belleza del cliente 2
+(4, 26), (4, 27), (4, 29), (4, 30),
+-- Gaming del cliente 3
+(5, 2), (5, 4), (5, 35),
+-- Vida saludable del cliente 4
+(6, 28), (6, 11), (6, 13),
+-- Deportes del cliente 5
+(7, 21), (7, 22), (7, 23), (7, 24), (7, 25),
+-- Cocina del cliente 6
+(8, 11), (8, 12), (8, 13), (8, 14), (8, 15),
+-- Tecnología móvil del cliente 7
+(9, 1), (9, 4), (9, 10),
+-- Decoración del cliente 8
+(10, 16), (10, 17), (10, 18),
+-- Fitness del cliente 9
+(11, 21), (11, 24), (11, 28),
+-- Gadgets del cliente 10
+(12, 3), (12, 10), (12, 20),
+-- Café del cliente 11
+(13, 11), (13, 15),
+-- Moda casual del cliente 12
+(14, 6), (14, 8),
+-- Outdoor del cliente 13
+(15, 21), (15, 25),
+-- Cuidado piel del cliente 14
+(16, 26), (16, 27),
+-- Entretenimiento del cliente 15
+(17, 35), (17, 36),
+-- Workspace del cliente 16
+(18, 2), (18, 39),
+-- Estilo femenino del cliente 17
+(19, 7), (19, 9), (19, 30),
+-- Alimentación saludable del cliente 18
+(20, 11), (20, 13), (20, 14);
+
+
+-- Insertar períodos de membresía para clientes
+INSERT INTO membershipperiods (membership_id, period_id, customer_id, price, start_date, end_date, status) VALUES
+-- Membresías Básicas
+(1, 1, 1, 19999.00, '2024-01-01', '2024-12-31', 'ACTIVE'),
+(1, 1, 5, 19999.00, '2024-02-01', '2025-01-31', 'ACTIVE'),
+(1, 1, 9, 19999.00, '2024-03-01', '2025-02-28', 'ACTIVE'),
+(1, 1, 13, 19999.00, '2024-04-01', '2025-03-31', 'ACTIVE'),
+(1, 1, 17, 19999.00, '2024-05-01', '2025-04-30', 'ACTIVE'),
+(1, 1, 21, 19999.00, '2024-06-01', '2025-05-31', 'ACTIVE'),
+(1, 1, 25, 19999.00, '2024-07-01', '2025-06-30', 'ACTIVE'),
+(1, 1, 29, 19999.00, '2024-08-01', '2025-07-31', 'ACTIVE'),
+
+-- Membresías Premium
+(2, 3, 2, 149999.00, '2024-01-01', '2024-12-31', 'ACTIVE'),
+(2, 3, 6, 149999.00, '2024-02-01', '2025-01-31', 'ACTIVE'),
+(2, 3, 10, 149999.00, '2024-03-01', '2025-02-28', 'ACTIVE'),
+(2, 3, 14, 149999.00, '2024-04-01', '2025-03-31', 'ACTIVE'),
+(2, 3, 18, 149999.00, '2024-05-01', '2025-04-30', 'ACTIVE'),
+(2, 3, 22, 149999.00, '2024-06-01', '2025-05-31', 'ACTIVE'),
+(2, 3, 26, 149999.00, '2024-07-01', '2025-06-30', 'ACTIVE'),
+(2, 3, 30, 149999.00, '2024-08-01', '2025-07-31', 'ACTIVE'),
+
+-- Membresías VIP
+(3, 5, 3, 499999.00, '2024-01-01', '2024-12-31', 'ACTIVE'),
+(3, 5, 7, 499999.00, '2024-02-01', '2025-01-31', 'ACTIVE'),
+(3, 5, 11, 499999.00, '2024-03-01', '2025-02-28', 'ACTIVE'),
+(3, 5, 15, 499999.00, '2024-04-01', '2025-03-31', 'ACTIVE'),
+(3, 5, 19, 499999.00, '2024-05-01', '2025-04-30', 'ACTIVE'),
+(3, 5, 23, 499999.00, '2024-06-01', '2025-05-31', 'ACTIVE'),
+(3, 5, 27, 499999.00, '2024-07-01', '2025-06-30', 'ACTIVE'),
+
+-- Membresías Empresariales
+(4, 5, 4, 999999.00, '2024-01-01', '2024-12-31', 'ACTIVE'),
+(4, 5, 8, 999999.00, '2024-02-01', '2025-01-31', 'ACTIVE'),
+(4, 5, 12, 999999.00, '2024-03-01', '2025-02-28', 'ACTIVE'),
+(4, 5, 16, 999999.00, '2024-04-01', '2025-03-31', 'ACTIVE'),
+(4, 5, 20, 999999.00, '2024-05-01', '2025-04-30', 'ACTIVE'),
+(4, 5, 24, 999999.00, '2024-06-01', '2025-05-31', 'ACTIVE'),
+(4, 5, 28, 999999.00, '2024-07-01', '2025-06-30', 'ACTIVE');
